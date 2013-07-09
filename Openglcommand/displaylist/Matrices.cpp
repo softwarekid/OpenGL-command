@@ -15,7 +15,7 @@
 //
 // Copyright (C) 2005 Song Ho Ahn
 ///////////////////////////////////////////////////////////////////////////////
-
+#include "stdafx.h"
 #include <cmath>
 #include <algorithm>
 #include "Matrices.h"

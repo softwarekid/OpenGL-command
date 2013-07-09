@@ -12,10 +12,11 @@
 //
 // Bounding box of geometry = (-3,0,-2) to (3.434,3.15,2).
 ///////////////////////////////////////////////////////////////////////////////
-
+#ifndef TEAPORT_HEADERFILE
+#define TEAPORT_HEADERFILE
 
 // vertices for teapot
-GLfloat teapotVertices[] = {
+static GLfloat teapotVertices[] = {
 	-3.00000f, 1.80000f, 0.000000f, -2.99160f, 1.80000f, -0.0810000f, -2.99160f, 1.80000f, 0.0810000f, 
 	-2.98945f, 1.66616f, 0.000000f, -2.98500f, 1.92195f, 0.000000f, 
 	-2.98117f, 1.66784f, -0.0810000f, -2.98117f, 1.66784f, 0.0810000f, 
@@ -1649,7 +1650,7 @@ GLfloat teapotVertices[] = {
 };
 
 // vertex normals for teapot
-GLfloat teapotNormals[] = {
+static GLfloat teapotNormals[] = {
 	-0.999758f, 0.0220180f, -0.000156564f, -0.974341f, 0.0213041f, -0.224065f, -0.974389f, 0.0225020f, 0.223741f, 
 	-0.987511f, -0.157553f, 3.08111e-005f, -0.961664f, 0.274230f, -0.000508001f, 
 	-0.962297f, -0.154240f, -0.224042f, -0.962552f, -0.152551f, 0.224104f, 
@@ -3283,7 +3284,7 @@ GLfloat teapotNormals[] = {
 };
 
 // indices for teapot
-GLushort teapotIndices[] = {
+static GLushort teapotIndices[] = {
 	3226, 3237, 3226, 3253, 3247, 3259, 3256, 3255, 3248, 3240, 3248, 3229, 3036, 3043, 3036, 3056, 
 	3036, 3052, 3027, 3046, 3018, 3025, 3010, 3016, 3001, 3006, 2993, 2996, 2982, 2987, 2957, 2961, 
 	2936, 2939, 2922, 2925, 2909, 2912, 2900, 2901, 2889, 2892, 2873, 2874, 2862, 2863, 2828, 2830, 
@@ -3723,7 +3724,7 @@ GLushort teapotIndices[] = {
 ///////////////////////////////////////////////////////////////////////////////
 // draw teapot using absolute pointers to indexed vertex array.
 ///////////////////////////////////////////////////////////////////////////////
-void drawTeapot()
+inline void drawTeapot()
 {
 	float shininess = 15.0f;
 	float diffuseColor[3] = {0.929524f, 0.796542f, 0.178823f};
@@ -3937,7 +3938,7 @@ void drawTeapot()
 // a display list. Above client calls must be reside outside of glNewList() and
 // glEndList() function.
 ///////////////////////////////////////////////////////////////////////////////
-GLuint createTeapotDL()
+inline GLuint createTeapotDL()
 {
 	GLuint id = 0;
 	float shininess = 15.0f;
@@ -4158,7 +4159,7 @@ GLuint createTeapotDL()
 // The caller must bind buffer ids and set the starting offset before call this
 // functions. (glBindBufferARB, glVertexPointer, glNormalPointer, glIndexPointer)
 ///////////////////////////////////////////////////////////////////////////////
-void drawTeapotVBO()
+inline void drawTeapotVBO()
 {
 	float shininess = 15.0f;
 	float diffuseColor[3] = {0.929524f, 0.796542f, 0.178823f};
@@ -4357,3 +4358,5 @@ void drawTeapotVBO()
 	glDisableClientState(GL_VERTEX_ARRAY);	// disable vertex arrays
 	glDisableClientState(GL_NORMAL_ARRAY);	// disable normal arrays
 }
+
+#endif

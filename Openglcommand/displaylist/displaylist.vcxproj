@@ -77,20 +77,31 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Matrices.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="teapot.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="txFemSurf.h" />
+    <ClInclude Include="Vectors.h" />
+    <ClInclude Include="xtCamera.h" />
+    <ClInclude Include="xtDrawTeapot.h" />
+    <ClInclude Include="xtModelP.h" />
+    <ClInclude Include="xtViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="displaylist.cpp" />
+    <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Timer.cxx" />
     <ClCompile Include="txFemSurf.cpp" />
+    <ClCompile Include="xtCamera.cpp" />
+    <ClCompile Include="xtDrawTeapot.cpp" />
+    <ClCompile Include="xtModelP.cpp" />
+    <ClCompile Include="xtViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\freeglut-2.6.0\VisualStudio2008\freeglut.vcxproj">

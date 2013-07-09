@@ -14,6 +14,10 @@
 #include "../../txcharencodeing/txCharConvert.h"
 #include "txFemSurf.h"
 
+#include "xtDrawTeapot.h"
+#include "xtViewer.h"
+#include "xtCamera.h"
+
 using std::stringstream;
 using std::cout;
 using std::endl;
@@ -52,6 +56,8 @@ int drawMode = 0;
 Timer timer;
 bool dlUsed;
 
+int windowWidth, windowHeight;
+
 // load resource
 txFemSurf femsurf;
 
@@ -60,6 +66,20 @@ void LoadFemSurf()
 	femsurf.LoadFemFile("arm.fem");
 }
 
+xtViewer teaViewer;
+xtCamera camera;
+void InitialScene()
+{
+	xtDrawTeapot *objTea = new xtDrawTeapot;
+	camera.setCamera(0.0f,0.0f,50.0f,0.0f,0.0f,0.0f);
+	camera.setCameraAngleX(20.0f);
+	camera.setCameraAngleY(20.0f);
+	camera.setCameraAngleZ(20.0f);
+	teaViewer.setCamera(&camera);
+	teaViewer.setWindowSize(windowWidth, windowHeight);
+	teaViewer.setDrawMode(1);
+	teaViewer.AddModel(objTea);
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -79,7 +99,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	initGLUT(argc,chargv);
 	initGL();
 
-	LoadFemSurf();
+	InitialScene();
+
+	//LoadFemSurf();
 
 	listId = createTeapotDL();
 
@@ -109,8 +131,9 @@ int initGLUT(int argc, char **argv)
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL );
-
-	glutInitWindowSize(400, 300);
+	windowWidth = 400;
+	windowHeight = 300;
+	glutInitWindowSize(windowWidth, windowHeight);
 
 	glutInitWindowPosition(100, 100);
 
@@ -149,7 +172,7 @@ void initGL()
 	glDepthFunc(GL_LEQUAL);
 
 	initLights();
-	setCamera(0,0,10,0,0,0);
+	//setCamera(0,0,10,0,0,0);
 
 }
 
@@ -204,38 +227,48 @@ void RenderSampleQuad()
 
 void displayCB()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	/*****
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	glPushMatrix();
+	//glPushMatrix();
 
-	glTranslatef(0,0,cameraDistance);
-	glRotatef(cameraAngleX,1,0,0);
-	glRotatef(cameraAngleY,0,1,0);
+	//glTranslatef(0,0,cameraDistance);
+	//glRotatef(cameraAngleX,1,0,0);
+	//glRotatef(cameraAngleY,0,1,0);
+	****/ // the commend is the original matrix transformation
 
 	timer.start();
 
 	if(dlUsed)
-		glCallList(listId);
+		;//glCallList(listId);
 	else
 		//drawTeapot();
 		//femsurf.Draw();
 		//femsurf.RenderSurf2();
 		//RenderSample();
-		RenderSampleQuad();
-	setCamera(2000,2000,2000,2000,2000,2000);
+		//RenderSampleQuad();
+		;
+
+	teaViewer.Draw();
+
+	//setCamera(2000,2000,2000,2000,2000,2000);
 
 	timer.stop();
 
 	showInfo();
 	showFPS();
 
-	glPopMatrix();
+//	glPopMatrix();
+
 	glutSwapBuffers();
 
 }
 
 void reshapeCB(int w, int h)
 {
+	windowWidth = w;
+	windowHeight = h;
+
 	glViewport(0,0,(GLsizei)w,(GLsizei)h);
 
 	float aspectRatio = (float)w/h;
@@ -245,6 +278,8 @@ void reshapeCB(int w, int h)
 	gluPerspective(60.0f,(float)(w)/h,1.0f,1000.0f);
 
 	glMatrixMode(GL_MODELVIEW);
+
+	teaViewer.setWindowSize(w,h);
 }
 
 void timerCB(int millisec)
