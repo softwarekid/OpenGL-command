@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="MeshCourse">
+</Property><Property Name="Solution File" Value="E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\MeshCourse.sln">
+</Property><Property Name="User Options File" Value="E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\MeshCourse.suo">
+</Property><Property Name="Date" Value="2013年7月9日">
+</Property><Property Name="Time" Value="15:35">
+</Property><Property Name="Log Number" Value="2">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="MeshCourse.sln" Description="File successfully backed up as E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\MeshCourse.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="MeshCourse.suo" Description="File successfully backed up as E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\MeshCourse.suo.old">
+</Event><Event ErrorLevel="0" Project="OpenMesh" Source="OpenMesh\OpenMesh.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\OpenMesh\OpenMesh.vcproj'.">
+</Event><Event ErrorLevel="1" Project="OpenMesh" Source="OpenMesh\OpenMesh.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="OpenMesh" Source="OpenMesh\OpenMesh.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\OpenMesh\OpenMesh.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="OpenMesh" Source="OpenMesh\OpenMesh.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ValenceViewer" Source="ValenceViewer\ValenceViewer.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\ValenceViewer\ValenceViewer.vcproj'.">
+</Event><Event ErrorLevel="1" Project="ValenceViewer" Source="ValenceViewer\ValenceViewer.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="ValenceViewer" Source="ValenceViewer\ValenceViewer.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\ValenceViewer\ValenceViewer.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="ValenceViewer" Source="ValenceViewer\ValenceViewer.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="IsoEx" Source="IsoEx\IsoEx.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\IsoEx\IsoEx.vcproj'.">
+</Event><Event ErrorLevel="1" Project="IsoEx" Source="IsoEx\IsoEx.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="IsoEx" Source="IsoEx\IsoEx.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\IsoEx\IsoEx.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="IsoEx" Source="IsoEx\IsoEx.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Smoothing" Source="Smoothing\Smoothing.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\Smoothing\Smoothing.vcproj'.">
+</Event><Event ErrorLevel="1" Project="Smoothing" Source="Smoothing\Smoothing.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="Smoothing" Source="Smoothing\Smoothing.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\Smoothing\Smoothing.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="Smoothing" Source="Smoothing\Smoothing.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Reconstruction" Source="Reconstruction\Reconstruction.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\Reconstruction\Reconstruction.vcproj'.">
+</Event><Event ErrorLevel="1" Project="Reconstruction" Source="Reconstruction\Reconstruction.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="Reconstruction" Source="Reconstruction\Reconstruction.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\standord\Exercise2\Exercise2\MSVC\Reconstruction\Reconstruction.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="Reconstruction" Source="Reconstruction\Reconstruction.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="MeshCourse.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="MeshCourse.sln" Description="Converted">
+</Event></UpgradeLog>
