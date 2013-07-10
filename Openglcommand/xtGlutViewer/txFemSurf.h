@@ -38,6 +38,8 @@ struct xtBBox
 	xtVec3df extend;
 };
 
+struct xtRaypick;
+
 class txFemSurf
 {
 public:
@@ -51,9 +53,13 @@ public:
 	void RenderSurf2();
 	void RenderSurf(bool addWireframe, bool defaultt=true );
 
+	bool RayCast(xtRaypick *ray, int &elementType, int &elementIndex);
+	void DrawHit(int elementType, int elementIndex);
+
+	
 
 	~txFemSurf(void);
-
+	 
 private:
 	void FillVC3C4(std::vector<xtVec3df> &tempverts,
 		std::vector<int> &tempctria3, std::vector<int> &tempcquad4);

@@ -2,6 +2,8 @@
 #include "xtGlutControl.h"
 #include <cmath>
 
+//#include "xtPickingUtil.h"
+
 #ifndef M_PI
   #define M_PI      3.14159265359
 #endif
@@ -25,6 +27,9 @@ xtGlutControl::xtGlutControl(const char *title, int width, int height)
   add_draw_mode("Solid Flat");
   add_draw_mode("Solid Smooth");
   set_draw_mode(1);
+
+  // set pick true
+  picksw = true;
 }
 
 
@@ -222,6 +227,13 @@ xtGlutControl::mouse(int button, int state, int x, int y)
     last_point_2D_ = Vec2i(x,y);
     last_point_ok_ = map_to_sphere( last_point_2D_, last_point_3D_ );
     button_down_[button] = true;
+
+	if ( picksw ) {
+		scweenxy = Vec2i(x,y);
+		//GetRay(x,y,m_Width,m_Height,fovy_,near_,far_,projection_matrix_,modelview_matrix_,ray);
+		GetRay2(x,y,m_Width,m_Height,fovy_,near_,far_,projection_matrix_,modelview_matrix_,ray);
+		printf("ray:%f,%f,%f<=>%f,%f,%f\n",ray.orin.x,ray.orin.y,ray.orin.z,ray.dir.x,ray.dir.y,ray.dir.z);
+	}
   }
 
 
@@ -453,6 +465,161 @@ xtGlutControl::reshape(int _w, int _h)
   update_projection_matrix();
   glutPostRedisplay();
 }
+
+void xtGlutControl::DrawRay()
+{
+	//glTranslate(
+	glutSolidTeapot(1);
+
+	float start[3] = {ray.orin.x,ray.orin.y,ray.orin.z};
+	const float scale = 100;
+	Vector3 endv(ray.orin + scale*ray.dir);
+	Vector3 startpa(ray.orin -scale*ray.dir);
+	float end[3] = {endv.x,endv.y,endv.z};
+	glDisable(GL_LIGHTING);
+
+	glBegin(GL_LINE);
+	glColor3f(0.0f,1.0f,0.0f);
+		glVertex3f(start[0],start[1],start[2]);
+		glVertex3f(end[0],end[1],end[2]);
+	glEnd();
+
+	
+
+	glPointSize(10);
+	glBegin(GL_POINTS);
+		glColor3f(0.0f,0.0f,1.0f);
+		for ( double delta=-1000.; delta<0; delta+=5.  ) {
+			//glVertex3f(end[0],end[1],end[2]);
+			Vector3 drawPnt = ray.orin + delta*ray.dir;
+			glVertex3f(drawPnt.x,drawPnt.y,drawPnt.z);
+		}
+		glColor3f(1.0f,0.0f,0.0f);
+		for ( double delta=0; delta<1000; delta+=5.  ) {
+			//glVertex3f(end[0],end[1],end[2]);
+			Vector3 drawPnt = ray.orin + delta*ray.dir;
+			glVertex3f(drawPnt.x,drawPnt.y,drawPnt.z);
+		}
+		
+	glEnd();
+
+	glEnable(GL_LIGHTING);
+}
+
+//BLUE
+void xtGlutControl::drawGrid(float size, float step)
+{
+    // disable lighting
+    glDisable(GL_LIGHTING);
+
+    glBegin(GL_LINES);
+
+    glColor3f(0.0f, 0.0f, 1.0f);
+    for(float i=step; i <= size; i+= step)
+    {
+        glVertex3f(-size, 0,  i);   // lines parallel to X-axis
+        glVertex3f( size, 0,  i);
+        glVertex3f(-size, 0, -i);   // lines parallel to X-axis
+        glVertex3f( size, 0, -i);
+
+        glVertex3f( i, 0, -size);   // lines parallel to Z-axis
+        glVertex3f( i, 0,  size);
+        glVertex3f(-i, 0, -size);   // lines parallel to Z-axis
+        glVertex3f(-i, 0,  size);
+    }
+
+    // x-axis
+    //glColor3f(0.5f, 0, 0);
+    //glVertex3f(-size, 0, 0);
+    //glVertex3f( size, 0, 0);
+
+    //// z-axis
+    //glColor3f(0,0,0.5f);
+    //glVertex3f(0, 0, -size);
+    //glVertex3f(0, 0,  size);
+
+    glEnd();
+
+    // enable lighting back
+    glEnable(GL_LIGHTING);
+}
+
+// xy plane means z is zero green/
+void xtGlutControl::drawGridXY(float size, float step)
+{
+    // disable lighting
+    glDisable(GL_LIGHTING);
+
+    glBegin(GL_LINES);
+
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for(float i=step; i <= size; i+= step)
+    {
+        glVertex3f(-size,i, 0);   // lines parallel to X-axis
+        glVertex3f( size,i, 0);
+        glVertex3f(-size,-i,0);   // lines parallel to X-axis
+        glVertex3f( size,-i,0);
+
+        glVertex3f( i,  -size,0);   // lines parallel to Z-axis
+        glVertex3f( i,   size,0);
+        glVertex3f(-i,  -size,0);   // lines parallel to Z-axis
+        glVertex3f(-i,   size,0);
+    }
+
+    //// x-axis
+    //glColor3f(0.5f, 0, 0);
+    //glVertex3f(-size, 0, 0);
+    //glVertex3f( size, 0, 0);
+
+    //// z-axis
+    //glColor3f(0,0,0.5f);
+    //glVertex3f(0, 0, -size);
+    //glVertex3f(0, 0,  size);
+
+    glEnd();
+
+    // enable lighting back
+    glEnable(GL_LIGHTING);
+}
+
+// x is zero Red
+void xtGlutControl::drawGridYZ(float size, float step)
+{
+    // disable lighting
+    glDisable(GL_LIGHTING);
+
+    glBegin(GL_LINES);
+
+    glColor3f(1.0f, 0.0f, 0.0f);
+    for(float i=step; i <= size; i+= step)
+    {
+        glVertex3f(0,-size,i);   // lines parallel to X-axis
+        glVertex3f(0, size,i);
+        glVertex3f(0,-size,-i);   // lines parallel to X-axis
+        glVertex3f(0, size,-i);
+
+        glVertex3f(0, i,  -size);   // lines parallel to Z-axis
+        glVertex3f(0, i,   size);
+        glVertex3f(0,-i,  -size);   // lines parallel to Z-axis
+        glVertex3f(0,-i,   size);
+    }
+
+    //// x-axis
+    //glColor3f(0.5f, 0, 0);
+    //glVertex3f(-size, 0, 0);
+    //glVertex3f( size, 0, 0);
+
+    //// z-axis
+    //glColor3f(0,0,0.5f);
+    //glVertex3f(0, 0, -size);
+    //glVertex3f(0, 0,  size);
+
+    glEnd();
+
+    // enable lighting back
+    glEnable(GL_LIGHTING);
+}
+
 
 
 

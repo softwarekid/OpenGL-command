@@ -9,6 +9,9 @@
 
 //#include <gl/GL.h>
 #include "../../freeglut-2.6.0/include/GL/glut.h"
+#include "Vectors.h"
+#include "xtRayTriOverlay.h"
+#include "xtPickingUtil.h"
 
 
 
@@ -570,4 +573,103 @@ void txFemSurf::RenderSurf2()
 		}
 		glEnd();
 	}
+}
+
+bool TestRayTriangleOverlay(xtRaypick *ray,xtIndexTria3 &currTria3, std::vector<xtVec3df> &verts)
+{
+	//xtIndexTria3 currTria3 = ctria3index[i];
+	xtVec3df ao,bo,co;
+	ao = verts[currTria3.a[0]];
+	bo = verts[currTria3.a[1]];
+	co = verts[currTria3.a[2]];
+	Vector3 a,b,c;
+	a.set(ao.v[0],ao.v[1],ao.v[2]);
+	b.set(bo.v[0],bo.v[1],bo.v[2]);
+	c.set(co.v[0],co.v[1],co.v[2]);
+	float t,u,v;
+	bool isInter = IntersectTriangle(ray->orin,ray->dir,a,b,c,&t,&u,&v);
+
+	return isInter;
+}
+
+bool txFemSurf::RayCast(xtRaypick *ray, int &elementType, int &elementIndex)
+{
+	// Check CTRIA3
+	for ( int i=0; i<(int)ctria3index.size(); i++ ) {
+		xtIndexTria3 currTria3 = ctria3index[i];
+		bool isInter = TestRayTriangleOverlay(ray,currTria3,verts);
+		if ( isInter ) {
+			elementType = 3;
+			elementIndex = i;
+			return true;
+		}
+	}
+
+	// for QUAD4
+	for(int i=0;i<(int)cquad4index.size();i++)
+	{
+		xtIndexCquad4 currquad4 = cquad4index[i];
+		xtIndexTria3 currTria31(currquad4.a[0],currquad4.a[1],currquad4.a[2]);
+		xtIndexTria3 currTria32(currquad4.a[0],currquad4.a[2],currquad4.a[3]);
+		bool isInter31 = TestRayTriangleOverlay(ray,currTria31,verts);
+		if ( isInter31 ) {
+			elementType = 4;
+			elementIndex = i;
+			return true;
+		}
+
+		bool isInter32 = TestRayTriangleOverlay(ray,currTria32,verts);
+		if ( isInter32 ) {
+			elementType = 4;
+			elementIndex = i;
+			return true;
+		}
+
+	}
+
+	return false;
+}
+
+void txFemSurf::DrawHit(int elementType, int elementIndex)
+{
+	glColor3f ( 0.0, 0.0, 1.0 );
+	//glutWireSphere(500,50,50);
+
+	if ( elementType==4 ) {
+		xtIndexCquad4 cquad4 = cquad4index[elementIndex];
+		glBegin( GL_POLYGON );
+		for ( int j=0; j<4; ++j ) {
+			xtVec3df normal = vertsnormal[cquad4.a[j]];
+			glNormal3f(normal.v[0],normal.v[1],normal.v[2]);
+			xtVec3df vert = verts[cquad4.a[j]];
+			glVertex3f(vert.v[0],vert.v[1],vert.v[2]);
+		}
+		glEnd();
+	}
+
+	if ( elementType==3 ) {
+		xtIndexTria3 currTria3 = ctria3index[elementIndex];
+		glBegin( GL_POLYGON );
+		for ( int j=0; j<3; ++j ) {
+			xtVec3df normal = vertsnormal[currTria3.a[j]];
+			glNormal3f(normal.v[0],normal.v[1],normal.v[2]);
+			xtVec3df vert = verts[currTria3.a[j]];
+			glVertex3f(vert.v[0],vert.v[1],vert.v[2]);
+		}
+		glEnd();
+	}
+
+	/****
+	for ( size_t i=0; i<cquad4index.size(); ++i ) {
+		xtIndexCquad4 cquad4 = cquad4index[i];
+		glBegin( GL_POLYGON );
+		for ( int j=0; j<4; ++j ) {
+			xtVec3df normal = vertsnormal[cquad4.a[j]];
+			glNormal3f(normal.v[0],normal.v[1],normal.v[2]);
+			xtVec3df vert = verts[cquad4.a[j]];
+			glVertex3f(vert.v[0],vert.v[1],vert.v[2]);
+		}
+		glEnd();
+	}
+	****/
 }

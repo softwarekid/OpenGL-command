@@ -1,6 +1,7 @@
 #pragma once
 #include "xtglutview.h"
 #include "Vectors.h"
+#include "xtPickingUtil.h"
 
 struct Vec2i
 {
@@ -45,6 +46,12 @@ protected:
   void zoom(int x, int y);
   void rotate( const Vector3& _axis, float _angle );
 
+  // debug
+  void DrawRay();
+  void drawGrid(float size, float step);
+  void drawGridXY(float size, float step);
+  void drawGridYZ(float size, float step);
+
 protected:
 
   // scene position and dimension
@@ -66,6 +73,12 @@ protected:
   Vector3    last_point_3D_;
   bool     last_point_ok_;
   bool     button_down_[10];
+
+
+  // 
+  bool picksw;
+  Vec2i scweenxy;
+  xtRaypick ray;
 
 
 };

@@ -10,6 +10,8 @@ public:
 	xtFemViewer(const char *title, int width, int height);
 	~xtFemViewer(void);
 
+	virtual void mouse(int button, int state, int x, int y);
+
 	void LoadFem(const char *filename);
 
   /// draw the scene
@@ -17,5 +19,10 @@ public:
 
 private:
 	txFemSurf *femsurf;
+
+
+	bool isHit;
+	int hitElementType;
+	int hitElementIndex;
 };
 

@@ -84,6 +84,8 @@
     <ClInclude Include="xtFemViewer.h" />
     <ClInclude Include="xtGlutControl.h" />
     <ClInclude Include="xtGlutView.h" />
+    <ClInclude Include="xtPickingUtil.h" />
+    <ClInclude Include="xtRayTriOverlay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrices.cpp" />
@@ -96,6 +98,8 @@
     <ClCompile Include="xtGlutControl.cpp" />
     <ClCompile Include="xtGlutView.cpp" />
     <ClCompile Include="xtGlutViewer.cpp" />
+    <ClCompile Include="xtPickingUtil.cpp" />
+    <ClCompile Include="xtRayTriOverlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\freeglut-2.6.0\VisualStudio2008\freeglut.vcxproj">
