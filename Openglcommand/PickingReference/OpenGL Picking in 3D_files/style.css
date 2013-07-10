@@ -1,0 +1,767 @@
+/*
+
+Theme Name: BlueMoD
+Theme URI: http://www.frederikm.de/?p=861
+Version: 1.0.3
+Description: A Theme by <a href="http://www.frederikm.de">FrederikM</a>. <br> BlueMod is a modification of the <a href="http://www.daburna.de/blog/2007/08/17/wordpress-blueblog_de-skin/">blueblog_DE Theme by Oliver Wunder</a>. <br>Use the Plugin <a href="http://wordpress.org/extend/plugins/pagebar/">Pagebar</a> to have a nice navigation at the bottom :)
+Author: FrederikM
+Author URI: http://www.frederikm.de
+Tags: blue, black, two-columns, fixed-width, right-sidebar 
+*/
+
+p {
+margin: 0px;
+padding: 0px;
+margin-bottom:15px;
+}
+
+a { color: #075181; background: inherit; text-decoration:none; }
+a:hover { background: inherit; text-decoration:underline; }
+
+ul { margin: 4px 0px 10px 0px; padding-left: 5px; /*list-style-image: url('images/arrow.gif');*/ list-style-type: disc;}
+li { 	margin: 0 0 2px 15px; padding: 0 0 0 0px;	color: #555; }
+.sub  {margin: 0 0 2px 30px; padding: 0 0 0 0px;  color: #888; }
+
+.headertitle {
+font-family: Georgia, "Times New Roman", Times, serif;
+float: left;
+margin-top: 100px;
+margin-left: 20px;
+font-size:2.5em;
+color:#fff;
+line-height: 1em;
+}
+.headerdes {
+font-size:10pt;
+color:#ccc;
+	font-family:Arial, Sans-Serif;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	background-image: url(images/bg.jpg);
+	color:#ccc;
+	line-height: 1.4em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	font-size:10pt;
+	font-family:Arial, Sans-Serif;
+	background-color: #0D1216;
+	position: relative;
+}
+
+
+h1 { 
+	padding:0; 
+	margin:0; 
+	color: #FFF; 
+	background: inherit;
+	font: bold 1.8em Arial, Sans-Serif; 
+	letter-spacing: -1px;
+}
+
+
+h1 a { color: #FFF; background: inherit; }
+
+h2 { 
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color:#075181;
+	font-size:130%; 
+	font-weight:normal; 
+	margin-left:0px; margin-right:0; margin-top:13px; margin-bottom:6px; padding-left:0px; padding-right:0; padding-top:0; padding-bottom:0 
+}
+
+h2 a { background: #FFF; color: #075181; }
+
+h2 a:hover { background: #FFF; color: #68ADD5; text-decoration:none;  }
+
+
+input.search { width: 150px; background: none; border: 1px solid #22313b; color: #e0f5ff; }
+input.submit { 
+	background: none; 
+	color: #e0f5ff;
+	border: 0px none;; font-style:normal; font-variant:normal; font-weight:normal; font-size:1.0em; font-family:Arial, Verdana, Helvetica, sans-serif
+}
+
+input.search:hover {	 }
+
+
+.content {
+	width: 924px;
+	clear: both;
+	margin: 0 auto; 
+	padding: 0; 
+	background-image: url(images/header.jpg);
+}
+
+.entry {
+	padding: 16px 30px 10px 40px;
+
+}
+
+#header {
+	height: 100px;
+	width: 924px;
+}
+#subheader {
+	height: 35px;
+	margin-top: 15px;
+	margin-right: 20px;
+	margin-bottom: 15px;
+	margin-left: 20px;
+}
+
+ 
+#subheader ul { float:left; margin:0; list-style:none; padding: 0px 0px 0px 0px; }
+#subheader li { float:left; color: #fff; /*background: #000;*/ margin: 0px; padding: 8px 0px 0px 10px; }
+
+#subheader a { float:left; display:block; color:#fff; padding: 0px 0px 0px 0px; text-decoration:none; }
+#subheader a:hover {
+	border-bottom: 3px solid #075181;
+	float: left;
+}  
+
+#subheader .suche {
+	color: #333;
+	float: right;
+	margin-top: 7px;
+}
+
+.background {
+	background-color: #0D1216;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(images/background.jpg);
+}
+#top {
+	height: 150px;
+	width: 924px;
+}
+#top .login {
+	float: right;
+	width: 70px;
+	padding-top: 45px;
+	clear: both;
+}
+
+#top a { color: #E0F5FF; }
+
+#main {
+/*background-image: url(images/right_sidebg.jpg);*/
+	padding: 0px;
+	color: #3b3b3b;
+	min-height: 500px;
+	width: 924px;
+	background-color: #FFF;
+	margin: 0;
+}
+#main .left_side {
+	float: left;
+	text-align: justify; 
+	border-right: 1px dotted #ccc;
+	width: 710px;
+}
+
+#main .right_side {
+/*background-color: #999;*/
+	float: right;
+	width: 200px;
+}
+
+
+/* Main Images
+---------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+#main img.centered {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+#main img.alignright {
+	padding: 4px;
+	margin: 0 0 2px 7px;
+	display: inline;
+	}
+
+#main img.alignleft {
+	padding: 4px;
+	margin: 0 7px 2px 0;
+	display: inline;
+	}
+
+#main .alignright {
+	float: right;
+	}
+
+#main .alignleft {
+	float: left;
+	}
+
+#main .left_side a img
+{
+        background-color: #FFF;
+        border: 1px solid #E0E0E0;
+        padding: 3px;
+}
+
+#main .left_side a img:hover {border: 1px solid #000;}
+
+ .img {
+	padding: 0 8px 8px 0;
+	float: left;
+}
+
+ .img2 {
+	padding: 0 0 3px 3px;
+	float: right;
+}
+
+#footer {
+	background-image: url(images/footer.jpg);
+	background-repeat: no-repeat;
+	background-position: center top;
+	height: 150px;
+}
+
+
+
+
+/* NAVIGATION
+---------------------------------------------------------------------------------------------------------------------------------------------------*/
+.nav { text-align: left; color: #7D8085; padding: 0px 0 0px 0px; width: 190px; }
+.nav ul { 
+	margin: 0px 0px 0px 0px; 
+	padding: 0px 0px 0px 0px; 
+	list-style: none;
+}
+.nav li { 
+	margin: 5px 0 5px 0px; 
+	padding: 0px 0 0 0px; 
+	border-bottom: 1px dotted #ccc; 
+	
+	list-style: none;
+}
+.nav li a { color: #546078; text-decoration: none; display: inline; padding: 1px 0 0 1px; margin-bottom: 1px;}
+.nav li a:hover { color: #075181; text-decoration: none; display: inline; background: #E5F6FF; margin-bottom: 1px;}
+
+
+/* News Header Left Side
+---------------------------------------------------------------------------------------------------------------------------------------------------*/
+.scan {
+	padding-left: 11px;
+	padding-top: 4px;
+	background-image: url(images/scan.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 56px;
+	clear:left;
+	margin-bottom: 0px;
+}
+.uberschrift {
+	margin-left: 15px;
+	margin-top: 5px;
+	float: left;
+	width: 610px;
+	margin-bottom: 0px;
+}
+.uberschrift .datumKopie .kom {
+	float: right;
+}
+.datebox {
+	float: left;
+	width: 52px;
+	background-image: url(images/calendar.png);
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 54px;
+	text-align: center;
+	padding-top: 2px;
+	line-height: 20px;
+	margin-top: 0px;
+}
+.datumformat {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #FFF;
+	font-size: 12px;
+}
+
+.datumtag {
+font-size: 24px; 
+color: #1D1D1D; 
+font-family: Georgia, "Times New Roman", Times, serif;
+
+}
+
+.datumKopie {
+	color: #666;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	margin-top: 2px;
+}
+
+.neu {
+	border-bottom: 1px;
+	border-bottom-style: dotted;
+	border-color: #ccc;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 1.6em;
+	padding-bottom: 5px;
+}
+
+.neu a:hover { color: #68ADD5; text-decoration: none; }
+
+.icon {
+	float: right;
+	background-repeat: no-repeat;
+	background-position: left top;
+	height: 15px;
+	/*background-image: url(images/comm3.jpg);*/
+	display: block;
+	padding-left: 24px;
+    margin-top: 1px;
+}
+
+.icon a:hover {
+	/*background-position: 0% -20px;*/
+	
+}
+
+.comtext {
+	float: right;
+	margin-left: 2px;
+}
+
+.ende {
+	clear:both;
+	height: 200px;
+	background: #0c1216 url('images/footer2.jpg') no-repeat center top;
+	background-position: 50% -5px;
+	display: block;
+}
+
+.ende2 {
+	
+	height: 40px;
+	width: 880px;
+	margin: auto;
+	padding-top: 7px;
+	font-size: 0.85em;
+	color: #666;
+}
+
+.ende a {
+	color: #666;
+	text-decoration: none;
+}
+
+.ende a:hover {
+	color: #CCC;
+	text-decoration: none;
+}
+
+
+/* Quotes & News
+---------------------------------------------------------------------------------------------------------------------------------------------------*/
+#main blockquote {
+	background: url('images/quote.jpg') no-repeat top left; 
+	background-position: 1px 5px;
+	margin: 15px 15px 15px 15px;
+ /*border:1px dashed #e3e4e4;*/
+    border-left: 4px solid #e3e4e4;
+	font-size: 0.86em;
+	padding:5px;
+	padding-left:40px;
+	padding-right:8px;
+    color: #5b5b5b;
+	background-color:#f5f5f5;
+
+}
+
+#main blockquote a {background-image: url(none);}
+#main blockquote a:hover {background-image: url(none);}
+
+.qthead {
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;
+}
+
+.qthead a:hover {text-decoration:underline;} 
+
+
+.newsstop {
+	margin: 15px 15px 0px 15px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;
+        /*border:1px dashed #e3e4e4;*/
+	border-bottom: 0;
+        border-left: 4px solid #e3e4e4;
+	padding:3px;
+	background-color:#f0f0f0;
+}
+
+.newsmain {
+	background: url('images/quote.jpg') no-repeat top left; 
+	background-position: 1px 5px;
+	margin: 0px 15px 15px 15px;
+	font-size: 0.86em;
+        /*border:1px dashed #e3e4e4;*/
+        border-left: 4px solid #e3e4e4;
+	border-top: 0;
+	padding:5px;
+	padding-left:40px;
+	padding-right:8px;
+        color: #5b5b5b;
+
+	background-color:#f5f5f5;
+
+
+}
+
+.newsmain a {background-image: url(none);}
+.newsmain a:hover {background-image: url(none);}
+
+.newsstop a {color: #333333;  text-decoration: none;}
+.newsstop a:hover {color: #555555;  text-decoration: none;}
+
+
+
+
+/* Comments etc. 1zu1 übernommen aus BlueBlog
+---------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+fieldset {	border: 1px solid #075181; }
+textarea.text { 
+	height: 150px; 
+	width: 90%; 
+	border: 1px solid #A90000; 
+	background: #FFF; 
+	color: #354D5F;
+}
+
+textarea.text:hover { 
+	border: 1px solid #A70000; 
+	background: #FFFFF4; 
+	color: #000;
+}
+
+input.field { 
+	border: 1px solid #075181; 
+	background-color: #FFFFFF; 
+	width: 283px; 
+	color: #000;
+}
+
+input.field:hover { 
+	border: 1px solid #68ADD5; 
+	background: #FFFFF4; 
+	color: #000;
+}
+
+input.text { 
+    border: 1px solid #A70000; 
+	margin: 0; 
+	width: 150px;
+	background: inherit;
+	color: #000; 
+	padding: 4px;
+}
+
+
+input.text:hover { 
+	border: 0px solid #68ADD5; 
+
+}
+
+.date { 
+	color: #808080; 
+	background: #FFFFFF;
+	text-align: right; 
+	margin: 4px 0 5px 0; 
+	padding: 0.4em 0 0 0; 
+	border-top: 1px solid #eee;
+}
+
+.comments { 
+	padding: 10px 10px 8px 10px; 
+	margin: 0 0 7px 0; 
+	background: #f8f8f8; 
+
+width: 400px;
+	color: #000;
+}
+
+.commentsbox { 
+	padding: 8px 0 10px 10px; 
+	margin: 0 0 10px 0; 
+	background: #f4f4f4; 
+	color: #000;
+	width: 400px;
+}
+
+.error {
+	color: #990000;
+	background-color: #FFF0F0;
+	padding: 7px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	border: 1px dashed #990000;
+}
+
+.error h2 {
+	color: #990000;
+	background: inherit;
+}
+
+.success {
+	color: #000000;
+	background: #F5FBE1;
+	padding: 7px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px dashed #7BA813;
+}
+.success h2 {
+	color: #7BA813;
+	background: inherit;
+}
+
+
+
+
+
+/*post stylng*/
+.post{margin:0 0 0px 0;}
+
+.post .info{
+padding:2px 3px 3px 8px;
+border:1px solid #e3e4e4;
+background-color:#f5f5f5;
+text-align: center;
+font-size:0.9em;
+color:#505050;
+}
+
+/*border-top: 1px solid #f5f5f5;*/
+/*background-color:#f5f5f5;*/
+
+
+/*comment styling*/
+/* Comments Styling */
+#commentlist li {
+margin-bottom: 1.5em;
+padding-bottom: 1em;
+border-bottom: 1px solid #700000;
+}
+
+#commentform {
+margin: 1em 0;
+
+width: 280px;
+}
+
+#commentform textarea {
+
+
+background: #f8f7f6;
+border: 1px solid #d6d3d3;
+width: 280px;
+}
+#commentform textarea:hover {
+background: #FFFFFF;
+border: 1px solid #d6d3d3;
+}
+#commentform textarea:focus {
+background: #ffffff;
+border: 1px solid #939793;
+}
+
+#commentform #email, #commentform #author, #commentform #url {
+font-size: 1.1em;
+background: #f8f7f6;
+border: 1px solid #d6d3d3;
+width: 280px;
+}
+#commentform #email:hover, #commentform #author:hover, #commentform #url:hover {
+font-size: 1.1em;
+background: #ffffff;
+border: 1px solid #d6d3d3;
+width: 280px;
+}
+#commentform #email:focus, #commentform #author:focus, #commentform #url:focus {
+font-size: 1.1em;
+background: #ffffff;
+border: 1px solid #939793;
+width: 280px;
+}
+#commentform input{
+margin-bottom: 3px;
+}
+
+/* Captions */
+.aligncenter,
+div.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.wp-caption {
+	border: 1px solid #ddd;
+	text-align: center;
+	background-color: #f3f3f3;
+	padding-top: 4px;
+	margin: 10px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+
+}
+
+.wp-caption img {
+	margin: 0;
+	padding: 0;
+	border: 0 none;
+
+}
+
+.wp-caption p.wp-caption-text {
+	font-size: 11px;
+	line-height: 17px;
+	padding: 0 4px 5px;
+	margin: 0;
+}
+/* End captions */
+
+.commentlist li .avatar { 
+	float: right;
+	border: 1px solid #eee;
+	padding: 2px;
+	background: #fff;
+	}
+	
+/* Begin Comments*/
+
+.alt {
+	margin: 0;
+	padding: 10px;
+	}
+
+.commentlist {
+	padding: 0;
+	text-align: justify;
+	}
+
+.commentlist li {
+	margin: 15px 0 10px;
+	padding: 5px 5px 10px 10px;
+
+
+
+
+	}
+.commentlist li ul li {
+	margin-right: -5px;
+	margin-left: 10px;
+
+}
+
+
+
+
+
+
+
+.commentlist p {
+	margin: 10px 5px 10px 0;
+}
+.children { padding: 0; }
+
+#commentform p {
+	margin: 5px 0;
+	}
+
+.nocomments {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	}
+
+.commentmetadata {
+	margin: 0;
+	display: block;
+	}
+
+
+
+/* class um die li der 1 Ebene zu gestalten*/
+.depth-1{
+		background-color:#f5f5f5;
+		border:1px solid #e3e4e4;
+		padding:2px;
+
+		}
+ 
+/*hat man Kind Kommentare gibt es dann noch soviel wie man eben braucht */
+.depth-2{	
+	background-color:white;
+	border:1px solid #e3e4e4;
+	list-style: none;
+		}	
+
+.depth-3{
+		background-color:#f5f5f5;
+		border:1px solid #e3e4e4;
+		list-style: none;
+		}
+.depth-4{
+		background-color:white;
+		border:1px solid #e3e4e4;
+		list-style: none;		
+
+
+		}
+
+.depth-5{
+		background-color:#f5f5f5;
+		border:1px solid #e3e4e4;
+		list-style: none;		
+		}		
+ 
+/* folgende gestalten das li abwechselnd, wenn man mag*/
+/* erstes li*/
+.even {}
+.thread-even{}
+/* zweites li*/
+.odd {}
+.alt {}
+.thread-odd {}
+.thread-alt{}
+ 
+ 
+ 
+/*---ende der class fuer die li---*/
+#respond {
+margin-left: 10px;
+}
+
+div.qwe {
+	width:630px;
+	padding:5px;
+	background-color:rgb(240, 240, 240);
+	font-size:10pt;
+	line-height:normal;
+	margin-top:15px;
+	margin-bottom:15px;
+}
+
+img.qwe {
+	width:628px;
+	margin-bottom:10px;
+}
+

@@ -1,0 +1,1418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0045)http://schabby.de/picking-opengl-ray-tracing/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta name="verify-v1" content="6BWugsT7UTuaEDHeZ2kU1ZuUkQx7zHvFkBRN4Cyn0ck=">
+<title>OpenGL Picking in 3D</title>
+
+<meta name="generator" content="BlueMod 1.0"> <!-- leave this for stats -->
+
+<link rel="stylesheet" href="./OpenGL Picking in 3D_files/style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="./OpenGL Picking in 3D_files/pagebar.css" type="text/css" media="screen">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://schabby.de/feed/">
+
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://schabby.de/feed/rss/">
+
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://schabby.de/feed/atom/">
+
+<link rel="pingback" href="http://schabby.de/xmlrpc.php">
+
+	<link rel="archives" title="November 2012" href="http://schabby.de/2012/11/">
+	<link rel="archives" title="October 2012" href="http://schabby.de/2012/10/">
+	<link rel="archives" title="September 2012" href="http://schabby.de/2012/09/">
+	<link rel="archives" title="August 2012" href="http://schabby.de/2012/08/">
+	<link rel="archives" title="July 2012" href="http://schabby.de/2012/07/">
+	<link rel="archives" title="February 2012" href="http://schabby.de/2012/02/">
+	<link rel="archives" title="January 2012" href="http://schabby.de/2012/01/">
+	<link rel="archives" title="November 2011" href="http://schabby.de/2011/11/">
+	<link rel="archives" title="October 2011" href="http://schabby.de/2011/10/">
+	<link rel="archives" title="September 2011" href="http://schabby.de/2011/09/">
+	<link rel="archives" title="August 2011" href="http://schabby.de/2011/08/">
+	<link rel="archives" title="July 2011" href="http://schabby.de/2011/07/">
+	<link rel="archives" title="March 2011" href="http://schabby.de/2011/03/">
+	<link rel="archives" title="November 2010" href="http://schabby.de/2010/11/">
+	<link rel="archives" title="July 2010" href="http://schabby.de/2010/07/">
+	<link rel="archives" title="June 2010" href="http://schabby.de/2010/06/">
+	<link rel="archives" title="March 2010" href="http://schabby.de/2010/03/">
+	<link rel="archives" title="February 2010" href="http://schabby.de/2010/02/">
+	<link rel="archives" title="November 2009" href="http://schabby.de/2009/11/">
+	<link rel="archives" title="October 2009" href="http://schabby.de/2009/10/">
+	<link rel="archives" title="September 2009" href="http://schabby.de/2009/09/">
+	<link rel="archives" title="August 2009" href="http://schabby.de/2009/08/">
+	<link rel="archives" title="June 2009" href="http://schabby.de/2009/06/">
+	<link rel="archives" title="September 2008" href="http://schabby.de/2008/09/">
+	<link rel="archives" title="August 2008" href="http://schabby.de/2008/08/">
+	<link rel="archives" title="September 2005" href="http://schabby.de/2005/09/">
+	<link rel="archives" title="August 2005" href="http://schabby.de/2005/08/">
+
+
+<link rel="alternate" type="application/rss+xml" title="Schabby&#39;s Blog » OpenGL Picking in 3D Comments Feed" href="http://schabby.de/picking-opengl-ray-tracing/feed/">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./OpenGL Picking in 3D_files/wp-syntax.css" type="text/css" media="all">
+<script id="facebook-jssdk" src="./OpenGL Picking in 3D_files/all.js"></script><script src="./OpenGL Picking in 3D_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript" src="./OpenGL Picking in 3D_files/comment-reply.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://schabby.de/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://schabby.de/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="LWJGL Example Base" href="http://schabby.de/lwjgl-example-base/">
+<link rel="next" title="Display Lists in OpenGL" href="http://schabby.de/display-lists/">
+<meta name="generator" content="WordPress 3.5.1">
+<link rel="shortlink" href="http://schabby.de/?p=964">
+
+<!-- All in One SEO Pack 2.0.2 by Michael Torbert of Semper Fi Web Design[368,446] -->
+<meta name="description" content="There are two common ways to accomplish picking: Switching OpenGL to selection mode and tracing a line shot from your 2D view screen through the 3D scene. In this opengl picking tutorial I cover the latter and provide a code example.">
+
+<link rel="canonical" href="./OpenGL Picking in 3D_files/OpenGL Picking in 3D.htm">
+<!-- /all in one seo pack -->
+<!--
+<script type="text/javascript" src="shadowbox/prototype.js"></script>
+<script type="text/javascript" src="shadowbox/adapter/shadowbox-prototype.js"></script>
+<script type="text/javascript" src="shadowbox/shadowbox.js"></script>
+-->
+<script type="text/javascript">
+Shadowbox.loadSkin('classic', 'shadowbox/skin');
+Shadowbox.loadLanguage('en', 'shadowbox/lang');
+Shadowbox.loadPlayer('img', 'shadowbox/player');
+</script>
+
+<style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}
+.fb_invisible{display:none}
+.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}
+.fb_reset > div{overflow:hidden}
+.fb_link img{border:none}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}
+.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}
+.fb_dialog_content{background:#fff;color:#333}
+.fb_dialog_close_icon{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px;top:8px\9;right:7px\9}
+.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}
+.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}
+.fb_dialog_close_icon:hover{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}
+.fb_dialog_close_icon:active{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}
+.fb_dialog_loader{background-color:#f2f2f2;border:1px solid #606060;font-size:24px;padding:20px}
+.fb_dialog_top_left,
+.fb_dialog_top_right,
+.fb_dialog_bottom_left,
+.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}
+/* @noflip */
+.fb_dialog_top_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}
+/* @noflip */
+.fb_dialog_top_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}
+/* @noflip */
+.fb_dialog_bottom_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}
+/* @noflip */
+.fb_dialog_bottom_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right,
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right{width:10px;height:100%}
+.fb_dialog_vert_left{margin-left:-10px}
+.fb_dialog_vert_right{right:0;margin-right:-10px}
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{width:100%;height:10px}
+.fb_dialog_horiz_top{margin-top:-10px}
+.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}
+.fb_dialog_iframe{line-height:0}
+.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3b5998;color:#fff;font-size:14px;font-weight:bold;margin:0}
+.fb_dialog_content .dialog_title > span{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif)
+no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}
+body.fb_hidden{-webkit-transform:none;height:100%;margin:0;left:-10000px;overflow:visible;position:absolute;top:-10000px;width:100%
+}
+.fb_dialog.fb_dialog_mobile.loading{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ya/r/3rhSv5V8j3o.gif)
+white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}
+.fb_dialog.fb_dialog_mobile.loading.centered{max-height:590px;min-height:590px;max-width:500px;min-width:500px}
+#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;left:0;top:0;width:100%;min-height:100%;z-index:10000}
+#fb-root #fb_dialog_ipad_overlay.hidden{display:none}
+.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}
+.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0 0, 0 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}
+.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%
+}
+.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px
+}
+.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px
+}
+.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0 0, 0 100%, from(#4966A6),
+color-stop(0.5, #355492), to(#2A4887));border:1px solid #29447e;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset,
+rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}
+.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}
+.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}
+.fb_dialog_content .dialog_content{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}
+.fb_dialog_content .dialog_footer{background:#f2f2f2;border:1px solid #555;border-top-color:#ccc;height:40px}
+#fb_dialog_loader_close{float:left}
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}
+.fb_iframe_widget{display:inline-block;position:relative}
+.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}
+.fb_iframe_widget iframe{position:absolute}
+.fb_iframe_widget_lift{z-index:1}
+.fb_hide_iframes iframe{position:relative;left:-10000px}
+.fb_iframe_widget_loader{position:relative;display:inline-block}
+.fb_iframe_widget_fluid{display:inline}
+.fb_iframe_widget_fluid span{width:100%}
+.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}
+.fb_iframe_widget_loader .FB_Loader{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}
+.fb_connect_bar_container div,
+.fb_connect_bar_container span,
+.fb_connect_bar_container a,
+.fb_connect_bar_container img,
+.fb_connect_bar_container strong{background:none;border-spacing:0;border:0;direction:ltr;font-style:normal;font-variant:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal;vertical-align:baseline}
+.fb_connect_bar_container{position:fixed;left:0 !important;right:0 !important;height:42px !important;padding:0 25px !important;margin:0 !important;vertical-align:middle !important;border-bottom:1px solid #333 !important;background:#3b5998 !important;z-index:99999999 !important;overflow:hidden !important}
+.fb_connect_bar_container_ie6{position:absolute;top:expression(document.compatMode=="CSS1Compat"? document.documentElement.scrollTop+"px":body.scrollTop+"px")}
+.fb_connect_bar{position:relative;margin:auto;height:100%;width:100%;padding:6px 0 0 0 !important;background:none;color:#fff !important;font-family:"lucida grande", tahoma, verdana, arial, sans-serif !important;font-size:13px !important;font-style:normal !important;font-variant:normal !important;font-weight:normal !important;letter-spacing:normal !important;line-height:1 !important;text-decoration:none !important;text-indent:0 !important;text-shadow:none !important;text-transform:none !important;white-space:normal !important;word-spacing:normal !important}
+.fb_connect_bar a:hover{color:#fff}
+.fb_connect_bar .fb_profile img{height:30px;width:30px;vertical-align:middle;margin:0 6px 5px 0}
+.fb_connect_bar div a,
+.fb_connect_bar span,
+.fb_connect_bar span a{color:#bac6da;font-size:11px;text-decoration:none}
+.fb_connect_bar .fb_buttons{float:right;margin-top:7px}
+.fb_edge_widget_with_comment{position:relative;*z-index:1000}
+.fb_edge_widget_with_comment span.fb_edge_comment_widget{position:absolute}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget{z-index:1}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget .FB_Loader{left:0;top:1px;margin-top:6px;margin-left:0;background-position:50% 50%;background-color:#fff;height:150px;width:394px;border:1px #666 solid;border-bottom:2px solid #283e6c;z-index:1}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget.dark .FB_Loader{background-color:#000;border-bottom:2px solid #ccc}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget.siderender
+.FB_Loader{margin-top:0}
+.fbpluginrecommendationsbarleft,
+.fbpluginrecommendationsbarright{position:fixed !important;bottom:0;z-index:999}
+/* @noflip */
+.fbpluginrecommendationsbarleft{left:10px}
+/* @noflip */
+.fbpluginrecommendationsbarright{right:10px}</style></head>
+
+<body onload="Shadowbox.init()">
+
+<div class="background">
+  <div class="content">
+    <div id="top">
+      <div class="login"><a href="http://schabby.de/wp-admin">Login</a> | <a href="http://schabby.de/feed/">RSS</a></div>
+      <div class="headertitle">Schabby's Blog<br><span class="headerdes">OpenGL, Java, Cassandra and other stuff that totally makes the world go round</span></div>
+    </div>
+    <div id="header"></div>
+    <div id="subheader">
+ 
+     <ul>
+      	 <li class="page_item page-item-1417"><a href="http://schabby.de/opengl-tutorial/">OpenGL Tutorial</a></li>
+        <li><div style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 106px; height: 24px; background-position: initial initial; background-repeat: initial initial;" id="___plusone_0"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 106px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 24px;" tabindex="0" vspace="0" width="100%" id="I0_1373423693724" name="I0_1373423693724" src="./OpenGL Picking in 3D_files/fastbutton.htm" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div></li>
+        <li><div class="fb-like fb_edge_widget_with_comment fb_iframe_widget" data-send="true" data-width="450" data-show-faces="false" fb-xfbml-state="rendered"><span style="height: 24px; width: 450px;"><iframe id="f33eba0318" name="f2c039474" scrolling="no" style="border: none; overflow: hidden; height: 24px; width: 450px;" title="Like this content on Facebook." class="fb_ltr" src="./OpenGL Picking in 3D_files/like.htm"></iframe></span></div></li>
+     </ul>
+      
+ 		<div class="suche">
+    	  	<form method="get" id="searchform" action="http://schabby.de/index.php">
+			<input type="text" value="" class="search" onblur="if(this.value==&#39;&#39;) this.value=&#39;search...&#39;;" onfocus="if(this.value==&#39;suche...&#39;) this.value=&#39;&#39;;" name="s" id="search_query">
+			<input type="submit" class="submit" value="Go"> </form>
+        </div>
+  
+    </div>
+<div id="main">
+      <div class="right_side"><div class="right_side">
+
+				<div class="nav">
+				<!--<div class="padding"></div>-->
+
+				
+<h2>Categories</h2>
+<ul>
+	<li class="cat-item cat-item-5"><a href="http://schabby.de/category/china/" title="View all posts filed under China">China</a> (20)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://schabby.de/category/dies-und-das/" title="View all posts filed under Dies Und Das">Dies Und Das</a> (16)
+</li>
+	<li class="cat-item cat-item-3"><a href="http://schabby.de/category/java/" title="View all posts filed under Java">Java</a> (25)
+</li>
+	<li class="cat-item cat-item-8"><a href="http://schabby.de/category/jblas/" title="View all posts filed under jBLAS">jBLAS</a> (1)
+</li>
+	<li class="cat-item cat-item-11"><a href="http://schabby.de/category/opengl/" title="View all posts filed under OpenGL">OpenGL</a> (11)
+</li>
+</ul>
+
+<br>
+<br>
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-0183226991448180";
+/* 160x600, Erstellt 12.12.09 */
+google_ad_slot = "7382485073";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript" src="./OpenGL Picking in 3D_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px"><ins id="aswift_0_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px"><iframe width="160" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+
+
+ <h21>Archiv</h21>
+
+<ul>
+	<li><a href="http://schabby.de/2012/11/" title="November 2012">November 2012</a></li>
+	<li><a href="http://schabby.de/2012/10/" title="October 2012">October 2012</a></li>
+	<li><a href="http://schabby.de/2012/09/" title="September 2012">September 2012</a></li>
+	<li><a href="http://schabby.de/2012/08/" title="August 2012">August 2012</a></li>
+	<li><a href="http://schabby.de/2012/07/" title="July 2012">July 2012</a></li>
+	<li><a href="http://schabby.de/2012/02/" title="February 2012">February 2012</a></li>
+	<li><a href="http://schabby.de/2012/01/" title="January 2012">January 2012</a></li>
+	<li><a href="http://schabby.de/2011/11/" title="November 2011">November 2011</a></li>
+	<li><a href="http://schabby.de/2011/10/" title="October 2011">October 2011</a></li>
+	<li><a href="http://schabby.de/2011/09/" title="September 2011">September 2011</a></li>
+	<li><a href="http://schabby.de/2011/08/" title="August 2011">August 2011</a></li>
+	<li><a href="http://schabby.de/2011/07/" title="July 2011">July 2011</a></li>
+	<li><a href="http://schabby.de/2011/03/" title="March 2011">March 2011</a></li>
+	<li><a href="http://schabby.de/2010/11/" title="November 2010">November 2010</a></li>
+	<li><a href="http://schabby.de/2010/07/" title="July 2010">July 2010</a></li>
+	<li><a href="http://schabby.de/2010/06/" title="June 2010">June 2010</a></li>
+	<li><a href="http://schabby.de/2010/03/" title="March 2010">March 2010</a></li>
+	<li><a href="http://schabby.de/2010/02/" title="February 2010">February 2010</a></li>
+	<li><a href="http://schabby.de/2009/11/" title="November 2009">November 2009</a></li>
+	<li><a href="http://schabby.de/2009/10/" title="October 2009">October 2009</a></li>
+	<li><a href="http://schabby.de/2009/09/" title="September 2009">September 2009</a></li>
+	<li><a href="http://schabby.de/2009/08/" title="August 2009">August 2009</a></li>
+	<li><a href="http://schabby.de/2009/06/" title="June 2009">June 2009</a></li>
+	<li><a href="http://schabby.de/2008/09/" title="September 2008">September 2008</a></li>
+	<li><a href="http://schabby.de/2008/08/" title="August 2008">August 2008</a></li>
+	<li><a href="http://schabby.de/2005/09/" title="September 2005">September 2005</a></li>
+	<li><a href="http://schabby.de/2005/08/" title="August 2005">August 2005</a></li>
+</ul>
+
+<br>
+
+<div style="display: block;
+margin:0pt;padding:0pt;position:relative;visibility:visible;width:158px;height:598px;border:1px
+solid rgb(86,27,125)">
+       <div style="height: 583px;">
+<script type="text/javascript">
+var uri = escape(top.location.href);
+document.write('<iframe allowtransparency="true" hspace="0" id="ladenzeile_ad" marginheight="0" marginwidth="0" name="ladenzeile_ad_frame" src="http://adzeile.ladenzeile.de:81/adzeile?ad=3&r=' + uri + '" style="left: 0pt; position: absolute; top: 0pt;" vspace="0" frameborder="0" height="584" scrolling="no" width="158"></iframe>');
+</script><iframe allowtransparency="true" hspace="0" id="ladenzeile_ad" marginheight="0" marginwidth="0" name="ladenzeile_ad_frame" src="./OpenGL Picking in 3D_files/adzeile.htm" style="left: 0pt; position: absolute; top: 0pt;" vspace="0" frameborder="0" height="584" scrolling="no" width="158"></iframe>
+       </div>
+       <div style="height:16px;font-size:10px;font-family: arial;text-align:right;background-color: rgb(86,27,125);color:white">
+               Anzeigen von &nbsp;&nbsp;&nbsp;<a style="color:white;padding-right:3px;font-size:11px;font-family:
+arial;font-weight: bold" href="http://www.ladenzeile.de/">ladenzeile.de</a>
+       </div>
+</div>
+
+
+
+				</div>
+			</div></div>
+     			<div class="left_side">
+				
+
+
+<div class="post" id="post-964">
+
+<div class="scan">
+  <div class="datebox"><div class="datumformat">Sep<br></div><div class="datumtag">20.</div></div>
+  <div class="uberschrift">
+    <div class="neu"><a href="./OpenGL Picking in 3D_files/OpenGL Picking in 3D.htm" rel="bookmark" title="Permanenter Link zu OpenGL Picking in 3D">OpenGL Picking in 3D</a></div>
+  <div class="datumKopie">
+    <div class="kom">
+    
+
+    </div><div class="comtext"><a href="http://schabby.de/picking-opengl-ray-tracing/#comments" title="Comment on OpenGL Picking in 3D">46 Comments </a>     </div>
+    <div class="icon"><img src="./OpenGL Picking in 3D_files/com.jpg" alt=""> </div>
+    Category: <a href="http://schabby.de/category/java/" title="View all posts in Java" rel="category tag">Java</a>, <a href="http://schabby.de/category/opengl/" title="View all posts in OpenGL" rel="category tag">OpenGL</a>  </div></div>
+</div>
+
+<div style="clear:both;"></div>
+
+
+
+
+
+<div class="entry">
+
+
+<p>This blog post explains a common and versatile approach to OpenGL picking called "ray picking". An example in pseudo-code is given below.</p>
+<p>Picking is the process of finding objects in you scene based on user input. Most commonly, you want to determine what object a user has clicked with his mouse. In this case the 2D mouse coordinates serve as a reference on the view port to identify the projected objected that has been clicked. A similar scenario is a first person shooter, where the gun serves as the picking pointer, however in world space coordinates. If you shoot your gun, the trajectory of the bullet is traced through your scene and collisions are detected.<span id="more-964"></span></p>
+<div id="attachment_996" class="wp-caption aligncenter" style="width: 473px"><img src="./OpenGL Picking in 3D_files/screenshot-opengl-picking.png" alt="Screenshot OpenGL Picking" title="Screenshot OpenGL Picking" width="463" height="363" class="size-full wp-image-996"><p class="wp-caption-text">A screenshot showing a hex map in an LWJGL application with a selected tile as an example for 3D picking</p></div>
+<h3>OpenGL Selection Mode vs. Ray Picking</h3>
+<p>There are two common ways of implementing picking. The first one makes use of a special OpenGL feature in which you render your scene in a so-called "selection mode". In selection mode, OpenGL does not render to the frame buffer but gathers depths information of the objects with is later read at the point where your picking occurs. The second approach is called "Ray Picking" and is independent from OpenGL and simulates a line that is shot through the scene until it hits an object. I personally prefer the second approach for the following reasons:</p>
+<ul>
+<li>You don't need an additional render pass. A render pass can take some considerable amount of time and special clipping/culling code is required to only render the small part of the scene which you want to perform the picking on. In addition, you render a less complex scene (omitting textures, lighting, normals, etc) in selection mode if possible which can add a high degree of complexity to your drawing routines (imagine breaking up display lists). Ray picking obviously requires some code to trace the ray through your scene, but this is usually less complex.</li>
+<li>Ray picking can be done independently from the rest of the game code as a simultaneous and "read-only" operation on the scene graph. In some environments such as AWT/JOGL where the input devices are handled by a separate thread, your picking code can run as part of the handler thread and does not impact the performance of the rest of the game. This comes in handy especially in scenarios where you need to perform picking very often (eg. mouse hovering, target laser on the in-game gun).</li>
+<li>In pretty much all Java environments, calling OpenGL takes a considerable amount of time due to JNI. It is therefore beneficial to minimize the number OpenGL calls. Rendering in selection mode would mean additional OpenGL calls that I rather substitute with ray picking.</li>
+</ul>
+<p>However, there are scenarios where ray picking is simply inferior or impractical. Consider picking in a scene with a lot of small details (eg. tree with little branches and leaves) or if you need to know the individual polygon/triangle that you picked. I will therefore cover both approaches, starting with ray picking in this post.</p>
+<p><a href="./OpenGL Picking in 3D_files/ray-packing.png"><img class="alignright" title="Picking by Ray Tracing" src="./OpenGL Picking in 3D_files/ray-packing.png" alt="Picking by Ray Tracing" width="465" height="289"></a></p>
+<h3>Ray Picking</h3>
+<p>Ray picking is the process of shooting a line (ie. "ray") from the camera through the 2D viewscreen (where the 3D scene is projected on) into the scene until it hits an object. To do so, we need to know the camera and the point on the viewscreen (eg. mouse cursor position). The first point is trivial, however the second point is a bit more difficult to determine. Let's say we have a 2D point on the viewscreen (x, y) and now want to map this point into world coordinates. One way would be to make use of the inverted viewing matrix, but inverting a matrix is usually an expensive undertaking. Instead, we compute the position of the plane of the viewscreen in world space and map the 2D point on this plane and from there into world space.</p>
+<p>The algorithm in pseudo code follows below. Note that <tt>cameraLookAt</tt> is the 3D point where the camera looks at (as used on <tt>glLookat</tt>), <tt>cameraPosition</tt> is the current position of the camera in world space and <tt>cameraUp</tt> is the up vector of the camera.</p>
+<pre style="border:1px gray solid;padding:5px;background-color:RGB(250, 250, 250);">x = getMouseX() // scalar
+y = getMouseY() // scalar
+
+view = cameraLookAt - cameraPosition // 3D float vector
+normalize view
+
+h = crossProduct( view, cameraUp ) // 3D float vector
+normalize h
+
+v = crossProduct( h, view) // 3D float vector
+normalize v</pre>
+<p>ok, so far for <tt>h</tt> and <tt>v</tt>. Note that <tt>v</tt> is actually pointing in the same direction like the camera-up vector, but we compute it via the cross product to illustrate the method.</p>
+<p>The vectors <tt>h</tt> and <tt>v</tt> are currently normalized to the length of 1. We now need to compute the lengths of <tt>h</tt> and <tt>v</tt> in the view port. In my example I assume that you set up your frustum by a field of view angle in degrees (<tt>fovy</tt>) as commonly the case with <tt>glFrustum</tt>. Let <tt>nearClippingDistance</tt> be the distance to the near clipping plane and <tt>width/height</tt> the ratio of the view port width divided by the viewport heigth.</p>
+<pre style="border:1px gray solid;padding:5px;background-color:RGB(250, 250, 250);">// convert fovy to radians 
+rad = fovy * PI / 180
+vLength = tan( rad / 2 ) * nearClippingPlaneDistance
+hLength = vLength * (width / height)
+
+scale v by vLength
+scale h by hLength</pre>
+<p>The two scalars <tt>vLength</tt> and <tt>hLength</tt> in combinaton with <tt>v</tt> and <tt>h</tt> help spanning the view port plane extending from the center point. At this point it is worth mentioning that it may make sense to only compute <tt>h</tt> and <tt>v</tt> when you update the camera orientation because the normalization involves a square root which is a relatively expensive operation (actually <tt>tan</tt> may also be avoided).</p>
+<p>Now it is time to map the 2D mouse coordinates onto the view port plane.</p>
+<pre style="border:1px gray solid;padding:5px;background-color:RGB(250, 250, 250);">// translate mouse coordinates so that the origin lies in the center
+// of the view port
+x -= width / 2
+y -= height / 2
+
+// scale mouse coordinates so that half the view port width and height
+// becomes 1
+y /= (height / 2)
+x /= (width / 2)
+
+// linear combination to compute intersection of picking ray with
+// view port plane
+pos = cameraPos + view*nearClippingPlaneDistance + h*x + v*y
+
+// compute direction of picking ray by subtracting intersection point
+// with camera position
+dir = pos - cameraPos</pre>
+<p>That's pretty much it. We now got <tt>pos</tt> as the intersection point of the picking ray in the view port plane and the picking ray direction <tt>dir</tt>. This describes a line that can now be used to intersect with the individual objects of the scene.</p>
+<pre style="border:1px gray solid;padding:5px;background-color:RGB(250, 250, 250);">// brute force
+for all objects in the scene 
+  test for intersection and keep closest
+end for</pre>
+<p>So by intersecting the picking ray with all your visible objects in your scene while keeping track of the distance, you determine the object that is hit by your mouse cursor.<br>
+Checking all objects in our scene may not be very efficient though. So in a first attempt I recommend to test only objects that lie (partly) within your viewing frustum. Under normal circumstances you got that code already in your scene graph as part of the software culling routine when pumping obects into the render pipeline, but if you build your scene graph / game engine from scratch, you will need to deal with culling yourself.</p>
+<h2>Source Code</h2>
+<p>I received many requests for the source code (many more than I actually expected). I therefore provide the code in the following part alongside with some explanatory comments. Let's first have a look at two classes that we are going to need. The first one is a simple 3D Vector representation as floats. We will use it to represent the vectors in the later part. The vector class is certainly no rocket-science, so you may want to just briefly scan over it.</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> Vector3f 
+<span style="color: #009900;">{</span>
+	<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">float</span> x, y, z<span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #666666; font-style: italic;">// Constructors as well as getters/setters omitted for brevity!!</span>
+	<span style="color: #666666; font-style: italic;">// Only important methods kept necessary for this tutorial.</span>
+	<span style="color: #666666; font-style: italic;">// The original class contains many more methods...</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f add<span style="color: #009900;">(</span>Vector3f a<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		x <span style="color: #339933;">+=</span> a.<span style="color: #006633;">x</span><span style="color: #339933;">;</span>
+		y <span style="color: #339933;">+=</span> a.<span style="color: #006633;">y</span><span style="color: #339933;">;</span>
+		z <span style="color: #339933;">+=</span> a.<span style="color: #006633;">z</span><span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f set<span style="color: #009900;">(</span>Vector3f v<span style="color: #009900;">)</span>	<span style="color: #009900;">{</span>
+		<span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">x</span> <span style="color: #339933;">=</span> v.<span style="color: #006633;">x</span><span style="color: #339933;">;</span>
+		<span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">y</span> <span style="color: #339933;">=</span> v.<span style="color: #006633;">y</span><span style="color: #339933;">;</span>
+		<span style="color: #000000; font-weight: bold;">this</span>.<span style="color: #006633;">z</span> <span style="color: #339933;">=</span> v.<span style="color: #006633;">z</span><span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f subAndAssign<span style="color: #009900;">(</span>Vector3f a, Vector3f b<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		x <span style="color: #339933;">=</span> a.<span style="color: #006633;">x</span> <span style="color: #339933;">-</span> b.<span style="color: #006633;">x</span><span style="color: #339933;">;</span>
+		y <span style="color: #339933;">=</span> a.<span style="color: #006633;">y</span> <span style="color: #339933;">-</span> b.<span style="color: #006633;">y</span><span style="color: #339933;">;</span>
+		z <span style="color: #339933;">=</span> a.<span style="color: #006633;">z</span> <span style="color: #339933;">-</span> b.<span style="color: #006633;">z</span><span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #008000; font-style: italic; font-weight: bold;">/**
+	 * Returns the length of the vector, also called L2-Norm or Euclidean Norm.
+	 */</span>
+	<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">float</span> l2Norm<span style="color: #009900;">(</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span> <span style="color: #003399;">Math</span>.<span style="color: #006633;">sqrt</span><span style="color: #009900;">(</span>x<span style="color: #339933;">*</span>x<span style="color: #339933;">+</span>y<span style="color: #339933;">*</span>y<span style="color: #339933;">+</span>z<span style="color: #339933;">*</span>z<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f crossAndAssign<span style="color: #009900;">(</span>Vector3f a, Vector3f b<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		<span style="color: #000066; font-weight: bold;">float</span> tempX <span style="color: #339933;">=</span> a.<span style="color: #006633;">y</span> <span style="color: #339933;">*</span> b.<span style="color: #006633;">z</span> <span style="color: #339933;">-</span> a.<span style="color: #006633;">z</span> <span style="color: #339933;">*</span> b.<span style="color: #006633;">y</span><span style="color: #339933;">;</span>
+		<span style="color: #000066; font-weight: bold;">float</span> tempY <span style="color: #339933;">=</span> a.<span style="color: #006633;">z</span> <span style="color: #339933;">*</span> b.<span style="color: #006633;">x</span> <span style="color: #339933;">-</span> a.<span style="color: #006633;">x</span> <span style="color: #339933;">*</span> b.<span style="color: #006633;">z</span><span style="color: #339933;">;</span>
+		<span style="color: #000066; font-weight: bold;">float</span> tempZ <span style="color: #339933;">=</span> a.<span style="color: #006633;">x</span> <span style="color: #339933;">*</span> b.<span style="color: #006633;">y</span> <span style="color: #339933;">-</span> a.<span style="color: #006633;">y</span> <span style="color: #339933;">*</span> b.<span style="color: #006633;">x</span><span style="color: #339933;">;</span>
+&nbsp;
+		x <span style="color: #339933;">=</span> tempX<span style="color: #339933;">;</span>
+		y <span style="color: #339933;">=</span> tempY<span style="color: #339933;">;</span>
+		z <span style="color: #339933;">=</span> tempZ<span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f scale<span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span> scalar<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		x <span style="color: #339933;">*=</span> scalar<span style="color: #339933;">;</span>
+		y <span style="color: #339933;">*=</span> scalar<span style="color: #339933;">;</span>
+		z <span style="color: #339933;">*=</span> scalar<span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f normalize<span style="color: #009900;">(</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		<span style="color: #000066; font-weight: bold;">float</span> length <span style="color: #339933;">=</span> l2Norm<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+		x <span style="color: #339933;">/=</span> length<span style="color: #339933;">;</span>
+		y <span style="color: #339933;">/=</span> length<span style="color: #339933;">;</span>
+		z <span style="color: #339933;">/=</span> length<span style="color: #339933;">;</span>
+&nbsp;
+		<span style="color: #000000; font-weight: bold;">return</span> <span style="color: #000000; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>So far for our vector helper class. It should be too surprising. Similar classes can be found in many libs, including LWJGL.</p>
+<p>The next class is actually important. It represents a line, more specifially the picking ray. In this case the line is represented by a point and a direction.</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">class</span> PickingRay 
+<span style="color: #009900;">{</span>
+	<span style="color: #000000; font-weight: bold;">private</span> Vector3f clickPosInWorld <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Vector3f<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+	<span style="color: #000000; font-weight: bold;">private</span> Vector3f direction <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Vector3f<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+	<span style="color: #008000; font-style: italic; font-weight: bold;">/**
+	 * Computes the intersection of this ray with the X-Y Plane (where Z = 0)
+	 * and writes it back to the provided vector.
+	 */</span>
+	<span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> intersectionWithXyPlane<span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">[</span><span style="color: #009900;">]</span> worldPos<span style="color: #009900;">)</span>
+	<span style="color: #009900;">{</span>
+		<span style="color: #000066; font-weight: bold;">float</span> s <span style="color: #339933;">=</span> <span style="color: #339933;">-</span>clickPosInWorld.<span style="color: #006633;">z</span> <span style="color: #339933;">/</span> direction.<span style="color: #006633;">z</span><span style="color: #339933;">;</span>
+		worldPos<span style="color: #009900;">[</span><span style="color: #cc66cc;">0</span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> clickPosInWorld.<span style="color: #006633;">x</span><span style="color: #339933;">+</span>direction.<span style="color: #006633;">x</span><span style="color: #339933;">*</span>s<span style="color: #339933;">;</span>
+		worldPos<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> clickPosInWorld.<span style="color: #006633;">y</span><span style="color: #339933;">+</span>direction.<span style="color: #006633;">y</span><span style="color: #339933;">*</span>s<span style="color: #339933;">;</span>
+		worldPos<span style="color: #009900;">[</span><span style="color: #cc66cc;">2</span><span style="color: #009900;">]</span> <span style="color: #339933;">=</span> <span style="color: #cc66cc;">0</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+&nbsp;
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f getClickPosInWorld<span style="color: #009900;">(</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		<span style="color: #000000; font-weight: bold;">return</span> clickPosInWorld<span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>
+	<span style="color: #000000; font-weight: bold;">public</span> Vector3f getDirection<span style="color: #009900;">(</span><span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		<span style="color: #000000; font-weight: bold;">return</span> direction<span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span>	
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>We are almost there. We just need to define the remaining prerequisites. You need to set them up before computing the actual picking ray:</p>
+<ul>
+<li><tt>position</tt> is a 3d vector (<tt>Vector3f</tt>) holding the world position of the camera</li>
+<li><tt>view</tt> is a 3d vector (<tt>Vector3f</tt>) holding the viewing direction of the camera</li>
+<li><tt>pickingRay</tt> is the helper class given above, basically it is a line with starting point <tt>PickingRay.clickPosInWorld</tt> and a direction <tt>PickingRay.direction</tt>. You need to instantiate it.</li>
+<li>two scalars <tt>viewportWidth</tt> and <tt>viewportHeight</tt> being the width and height of the current view port.</li>
+<li>two scalars <tt>screenX</tt> and <tt>screenY</tt> are the mouse coordinates on your 2D screen (origin in lower left corner)</li>
+</ul>
+<p>Now we are able to compute the screen in world space. Note that <tt>screenHoritzontally</tt> and <tt>screenVertically</tt> correspond to <tt>h</tt> and <tt>v</tt> in the pseudo code above.</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java" style="font-family:monospace;">        <span style="color: #666666; font-style: italic;">// look direction</span>
+        view.<span style="color: #006633;">subAndAssign</span><span style="color: #009900;">(</span>lookAt, position<span style="color: #009900;">)</span>.<span style="color: #006633;">normalize</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #666666; font-style: italic;">// screenX</span>
+        screenHoritzontally.<span style="color: #006633;">crossAndAssign</span><span style="color: #009900;">(</span>view, up<span style="color: #009900;">)</span>.<span style="color: #006633;">normalize</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #666666; font-style: italic;">// screenY</span>
+        screenVertically.<span style="color: #006633;">crossAndAssign</span><span style="color: #009900;">(</span>screenHoritzontally, view<span style="color: #009900;">)</span>.<span style="color: #006633;">normalize</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #000066; font-weight: bold;">float</span> radians <span style="color: #339933;">=</span> <span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span> <span style="color: #009900;">(</span>viewAngle<span style="color: #339933;">*</span><span style="color: #003399;">Math</span>.<span style="color: #006633;">PI</span> <span style="color: #339933;">/</span> 180f<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">float</span> halfHeight <span style="color: #339933;">=</span> <span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span> <span style="color: #009900;">(</span><span style="color: #003399;">Math</span>.<span style="color: #006633;">tan</span><span style="color: #009900;">(</span>radians<span style="color: #339933;">/</span><span style="color: #cc66cc;">2</span><span style="color: #009900;">)</span><span style="color: #339933;">*</span>nearClippingPlaneDistance<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">float</span> halfScaledAspectRatio <span style="color: #339933;">=</span> halfHeight<span style="color: #339933;">*</span>getViewportAspectRatio<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        screenVertically.<span style="color: #006633;">scale</span><span style="color: #009900;">(</span>halfHeight<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        screenHoritzontally.<span style="color: #006633;">scale</span><span style="color: #009900;">(</span>halfScaledAspectRatio<span style="color: #009900;">)</span><span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>We now have the screen position in world space. <tt>lookAt</tt> is the point (!) in world coordinates where the camera looks at, so that <tt>view</tt> becomes the viewing direction. The scalar <tt>nearClippingPlaneDistance</tt> is the distance to the near clipping plane of your viewing frustum. Yes, I am still using pre-4.0 OpenGL code here <img src="./OpenGL Picking in 3D_files/icon_wink.gif" alt=";)" class="wp-smiley"><br>
+Btw, you need to execute the code above only if you change the camera settings (view direction, position, etc.) to update the screen position in world space. Many frames are often rendered without updating the screen position, so that this may be a nice performance optimization (well, actually the vector normalization (square root) and <tt>tan()</tt> is a bit expensive).</p>
+<p>Finally, in order to compute the actual picking lines, you need to do the following (<tt>screenX</tt> and <tt>screenY</tt> are the 2D mouse coordinates):</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java" style="font-family:monospace;">    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000066; font-weight: bold;">void</span> picking<span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span> screenX, <span style="color: #000066; font-weight: bold;">float</span> screenY, PickingRay pickingRay<span style="color: #009900;">)</span>
+    <span style="color: #009900;">{</span>
+        pickingRay.<span style="color: #006633;">getClickPosInWorld</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">set</span><span style="color: #009900;">(</span>position<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        pickingRay.<span style="color: #006633;">getClickPosInWorld</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">add</span><span style="color: #009900;">(</span>view<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        screenX <span style="color: #339933;">-=</span> <span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span>viewportWidth<span style="color: #339933;">/</span>2f<span style="color: #339933;">;</span>
+        screenY <span style="color: #339933;">-=</span> <span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span>viewportHeight<span style="color: #339933;">/</span>2f<span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #666666; font-style: italic;">// normalize to 1</span>
+        screenX <span style="color: #339933;">/=</span> <span style="color: #009900;">(</span><span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span>viewportWidth<span style="color: #339933;">/</span>2f<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        screenY <span style="color: #339933;">/=</span> <span style="color: #009900;">(</span><span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">float</span><span style="color: #009900;">)</span>viewportHeight<span style="color: #339933;">/</span>2f<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+        pickingRay.<span style="color: #006633;">getClickPosInWorld</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">x</span> <span style="color: #339933;">+=</span> screenHoritzontally.<span style="color: #006633;">x</span><span style="color: #339933;">*</span>screenX <span style="color: #339933;">+</span> screenVertically.<span style="color: #006633;">x</span><span style="color: #339933;">*</span>screenY<span style="color: #339933;">;</span>
+        pickingRay.<span style="color: #006633;">getClickPosInWorld</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">y</span> <span style="color: #339933;">+=</span> screenHoritzontally.<span style="color: #006633;">y</span><span style="color: #339933;">*</span>screenX <span style="color: #339933;">+</span> screenVertically.<span style="color: #006633;">y</span><span style="color: #339933;">*</span>screenY<span style="color: #339933;">;</span>
+        pickingRay.<span style="color: #006633;">getClickPosInWorld</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">z</span> <span style="color: #339933;">+=</span> screenHoritzontally.<span style="color: #006633;">z</span><span style="color: #339933;">*</span>screenX <span style="color: #339933;">+</span> screenVertically.<span style="color: #006633;">z</span><span style="color: #339933;">*</span>screenY<span style="color: #339933;">;</span>
+&nbsp;
+        pickingRay.<span style="color: #006633;">getDirection</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">set</span><span style="color: #009900;">(</span>pickingRay.<span style="color: #006633;">getClickPosInWorld</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        pickingRay.<span style="color: #006633;">getDirection</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span>.<span style="color: #006633;">sub</span><span style="color: #009900;">(</span>position<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>Done! Now you can use the <tt>pickingRay</tt> instance to check for intersections with the objects in your scene.</p>
+<p>I hope this helps, please leave a comment if you like the tutorial or if you jave a question.</p>
+<p>Cheers,</p>
+<p>Johannes</p>
+<br>
+</div>
+
+
+
+</div>
+
+ 
+<div style="padding-left:40px">
+   <div>Written by <a rel="author" href="https://plus.google.com/u/1/112690491465236619308">Johannes Schaback</a></div>
+   <div style="text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 106px; height: 24px; background-position: initial initial; background-repeat: initial initial;" id="___plusone_1"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 106px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 24px;" tabindex="0" vspace="0" width="100%" id="I1_1373423693728" name="I1_1373423693728" src="./OpenGL Picking in 3D_files/fastbutton(1).htm" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div> 
+   <div class="fb-like fb_edge_widget_with_comment fb_iframe_widget" data-send="true" data-width="450" data-show-faces="true" fb-xfbml-state="rendered"><span style="height: 24px; width: 450px;"><iframe id="f11ea36a5" name="f122e72b9c" scrolling="no" style="border: none; overflow: hidden; height: 24px; width: 450px;" title="Like this content on Facebook." class="fb_ltr" src="./OpenGL Picking in 3D_files/like(1).htm"></iframe></span></div>
+</div>
+
+<!-- You can start editing here.-->
+<div class="entry">
+    	
+	        <h2 id="comments">46 Antworten</h2>
+        <ol class="commentlist">
+            		<li class="comment even thread-even depth-1" id="comment-278">
+				<div id="div-comment-278" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/972dd44d560c0d57518ea5b50659e0b9" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Nocturn</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-278">
+			30. November 2011 at 06:46</a>		</div>
+
+		<p>Hi, I'm newbie in 3D graphics and I'm trying to use ray tracing for collision detection for a game similar to Tron race. </p>
+<p>I've found your post very enlightening but I don't finally get how to use this to determine if the player is going to crash, because in that case I'm not mapping the X Y coordinates like you do with the mouse picking.</p>
+<p>In my case I just have the coordinates of the player character (a motorcycle) and the direction it is going. But that is in world coordinates not in the 2d coordinates like the mouse cursor.</p>
+<p>I don't know if I'm explaning myself pretty well but I'll appreciate your help!</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-279">
+				<div id="div-comment-279" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-279">
+			30. November 2011 at 10:08</a>		</div>
+
+		<p>Hi!</p>
+<p>Thanks for your comment. The scenario you describe seems to be a typical collision detection problem. From what I understand is that you want to have several objects on a map that may collide. In this case I recommend you regard your objects on the map as simple boxes (ie. "bounding boxes") and test for collisions for each of the individual boxes. A slightly simpler approach may be to use the center points of the objects and compare the distances to each object and once the distance is closer than a certain threshold (ie. radius), you have a collision. </p>
+<p>Both approaches need some tuning in a real-time environment, because I may happen that your collision lies between two time frames and you never detect it. But this is solvable as well.</p>
+<p>Does this help?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-280">
+				<div id="div-comment-280" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/972dd44d560c0d57518ea5b50659e0b9" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Nocturn</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-280">
+			30. November 2011 at 20:57</a>		</div>
+
+		<p>Well, let me explain myself better. As I understood you used your window coordinates of the cursor to make the ray. Like this:</p>
+<p>pos = cameraPos + view + h*x + v*y</p>
+<p>and this:</p>
+<p>dir = pos - cameraPos</p>
+<p>In my case I don't have that because I'm not using the mouse to detect the collision, I have to use the player position (in world coordinates) to do so.</p>
+<p>How this case, changes the procedure you made? Do the x and y of the player object work the same as the X and Y of the cursor?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-281">
+				<div id="div-comment-281" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-281">
+			1. December 2011 at 11:59</a>		</div>
+
+		<p>Hi Noctum!</p>
+<p>Well, if you want to cast the picking ray from an object in your scene that is different from the camera, you can indeed apply the same principle. However in my case, the problem I am solving is the mapping from a 2D screen space (mouse coordinates) into a 3D world space. In your case, you already are in world space, so that I do not fully understand why you want to burden yourself with this approach for collision detection. <img src="./OpenGL Picking in 3D_files/icon_smile.gif" alt=":)" class="wp-smiley">  You dont necessarily need ray casting for collision detection, except your are trying to simulate a bullet shot and want to determine where the bullet hits a target.</p>
+<p>Anywasys, in world space, the same principle may be applied as follows:<br>
+Let's say you want to cast the ray from an object at position O (being a 3D-vector) into direction I (again being a 3D-Vector). The ray is then described as a line of the form O + I*v, where v is the scalar to scale the length of the line. In addition, let us assume you have several objects K1, K2, K3, etc. as 3D mid-points in your scene that you want to detect a collision of the ray with. For simplicity, we assume each object with mid-point K1, K2, K3, etc. to be a sphere with radius r. All you need to do is then to solve the following equation (in the case for K1):</p>
+<p>K1 - (O + I*v) &lt; = r</p>
+<p>Since all parameters an known except for v and we are in 3D, you solve for v (analytically) and get an equation for v. If there is a v that satisfies the equation, you have a collision of the line with object K1. </p>
+<p>You need to compute the v for all K1, K2, K3, etc. respectevly, of course.</p>
+<p>Let me know if this helps <img src="./OpenGL Picking in 3D_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-282">
+				<div id="div-comment-282" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/972dd44d560c0d57518ea5b50659e0b9" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Nocturn</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-282">
+			3. December 2011 at 05:12</a>		</div>
+
+		<p>Thank you that was really helpfull!</p>
+<p>Keep the good work with the blog!</p>
+<p>Nestor</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-326">
+				<div id="div-comment-326" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/bcc2f96d50fb80b8f5cd276902fd0c96" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.delgine.com/" rel="external " class="url">Jeroen</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-326">
+			11. February 2012 at 17:03</a>		</div>
+
+		<p>Hi there,</p>
+<p>I really like this explanation of ray picking and would like to see the source code you produced. Can you send it to jeroen at delgine dot com?</p>
+<p>Thanks in advance. And thumbs up - you're doing a great job with this blog!</p>
+<p>Cheers,<br>
+Jeroe</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="comment-329">
+				<div id="div-comment-329" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-329">
+			13. February 2012 at 11:57</a>		</div>
+
+		<p>Hi Jeroe, sorry for the late reply!! I am happy to send you the code. It will actually only be one class called Camera in which I provide the routines for billboarding, picking, etc. Please let me know if you have questions.</p>
+<p>Cheers,</p>
+<p>Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-362">
+				<div id="div-comment-362" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/e1f311a4dfd860d1b357283bbd7d0d60" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Dinu</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-362">
+			14. March 2012 at 00:10</a>		</div>
+
+		<p>Great blog! Realy good explanation. Please share the source code.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-368">
+				<div id="div-comment-368" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/17dc60f31cd06b50a266a34a8433ad03" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://schabby.de/picking-opengl-ray-tracing/?" rel="external " class="url">Yoda</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-368">
+			26. March 2012 at 10:22</a>		</div>
+
+		<p>Great explanation, could you share the source code please?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-369">
+				<div id="div-comment-369" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/17dc60f31cd06b50a266a34a8433ad03" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://schabby.de/picking-opengl-ray-tracing/?" rel="external " class="url">Yoda</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-369">
+			26. March 2012 at 10:52</a>		</div>
+
+		<p>or send me to email please?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="comment-370">
+				<div id="div-comment-370" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-370">
+			26. March 2012 at 14:13</a>		</div>
+
+		<p>hi Yoda!</p>
+<p>I will send it to you right away! Sorry for the delay!</p>
+<p>Regards, Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-374">
+				<div id="div-comment-374" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/0cb7e56ceaed6acb77a7ed59263f2ab1" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">enkor</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-374">
+			7. April 2012 at 18:32</a>		</div>
+
+		<p>hi,<br>
+can you please share the source code to me ?</p>
+<p>thx for great tutorial.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-377">
+				<div id="div-comment-377" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/933d6e72eb851af96240501498c07ff2" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">And Cos</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-377">
+			16. April 2012 at 10:04</a>		</div>
+
+		<p>Hi,<br>
+Thank you for your explanation of ray picking, it is very well made and in detail, it helped me understand the way 3D picking is made, but i have a question, isn't V vector the same as the camera up vector?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-378">
+				<div id="div-comment-378" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-378">
+			16. April 2012 at 12:05</a>		</div>
+
+		<p>Hi, yes!! V points in the same direction like the camera-up vector. It gets scaled to a different length though (not normalized to length 1). You could indeed save the cross product part for V and simply copy the camera-up vector and later rescale the copy.</p>
+<p>Good point, thanks</p>
+<p>Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-379">
+				<div id="div-comment-379" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/933d6e72eb851af96240501498c07ff2" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">And Cos</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-379">
+			16. April 2012 at 13:20</a>		</div>
+
+		<p>Thank you, once again.<br>
+Sorry for my misunderstanding, i was mislead by the fact that in opengles you specify an up direction, not an up vector as i thought,so there is no way of getting the up vector of the camera without calculating it the way you did it above.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-380">
+				<div id="div-comment-380" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/933d6e72eb851af96240501498c07ff2" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">And Cos</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-380">
+			16. April 2012 at 13:21</a>		</div>
+
+		<p>can i receive the source code please?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-382">
+				<div id="div-comment-382" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/e63eafef72552ab0909520cdd23f4019" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Snark</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-382">
+			18. April 2012 at 17:06</a>		</div>
+
+		<p>Hello,<br>
+Thx for tutorial, and can i get the source code too?</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-383">
+				<div id="div-comment-383" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/f196e114c7a99776b44d94eb5ed1e673" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">peon</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-383">
+			23. April 2012 at 15:16</a>		</div>
+
+		<p>Hey,<br>
+Great explanation, can I get the source code please. send it to andreea dot zor at gmail dot com</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-385">
+				<div id="div-comment-385" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/877cae5246b78ac330b7902d86b2002f" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">denny</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-385">
+			29. April 2012 at 22:43</a>		</div>
+
+		<p>HI! Great tutorial! Can I getthe entire source code please? thx</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-387">
+				<div id="div-comment-387" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/faa66e1a58785971d27b5c94b903a8b8" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">gabriele</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-387">
+			30. April 2012 at 14:03</a>		</div>
+
+		<p>hi,<br>
+can you send me the source code?<br>
+the mail is:<br>
+g dot salvati at gmail dot com</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-395">
+				<div id="div-comment-395" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/f4796f9cc46a1ba1c08857642aaa6f53" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">D Shimmies</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-395">
+			4. May 2012 at 17:01</a>		</div>
+
+		<p>Hey,<br>
+Fantastic tutorial. I was wondering if I could get the source code.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-396">
+				<div id="div-comment-396" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/8e1fa237e48d86b1950d1bcad649e01f" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Travis</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-396">
+			4. May 2012 at 21:04</a>		</div>
+
+		<p>Could I get the source code please? if you could send it to <a href="mailto:twfolsom11@charter.net">twfolsom11@charter.net</a>. thanks</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-402">
+				<div id="div-comment-402" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/77907d7f593a30d1101750a3c4cfd340" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Chris</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-402">
+			13. June 2012 at 21:33</a>		</div>
+
+		<p>Thanks for the tutorial but I just wanted to add a correction. The final formula for pos you have written is "pos = cameraPos + view + h*x + v*y", but this should be pos = cameraPos + nearClippingPlaneDistance*view + h*x + v*y. This new formula should correctly translate the point onto the view plane.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-403">
+				<div id="div-comment-403" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/f6f9314a9beaa7ade2139bf404c63215" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.footydomain.com/" rel="external " class="url">D J Wray</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-403">
+			14. June 2012 at 06:14</a>		</div>
+
+		<p>Great article, but I have a few questions <img src="./OpenGL Picking in 3D_files/icon_smile.gif" alt=":)" class="wp-smiley"><br>
+I have an image created with 3ds Max. Near clipping plane is 0. Far clipping plane is 1000. If I follow your instructions vLength becomes 0 and hLength becomes 0. Is that a problem? Also, how do you "scale v by vLength" and and how do you perform "cameraPos + view + h*x + v*y". Sorry I'm relatively new to vectors and matrices. Any help by anyone much appreciated !</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-404">
+				<div id="div-comment-404" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/f6f9314a9beaa7ade2139bf404c63215" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.footydomain.com/" rel="external " class="url">D J Wray</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-404">
+			19. June 2012 at 10:58</a>		</div>
+
+		<p>Hi Johannes,</p>
+<p>I discovered that my near clipping plane distance is actually 1 but I still can't produce a meaningful result. The values in v, h and view (all normalized) are tiny compared to my camera position coordinates (0,120,390), so cameraPos + view + h*x + v*y is virtually the same as cameraPos. The x and y values are also tiny because they have been scaled down to between -1 and 1. When you say "scale v by vLength" do you mean multiply each element of v by vLength? Obviously I'm still doing something wrong. If you haven't got time to explain maybe you could be kind enough to send me the source code.</p>
+<p>Regards, Darren.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-405">
+				<div id="div-comment-405" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/f6f9314a9beaa7ade2139bf404c63215" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.footydomain.com/" rel="external " class="url">D J Wray</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-405">
+			20. June 2012 at 06:59</a>		</div>
+
+		<p>Got it working. Yippee!</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="comment-406">
+				<div id="div-comment-406" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-406">
+			20. June 2012 at 08:57</a>		</div>
+
+		<p>Hehe, awesome! <img src="./OpenGL Picking in 3D_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-407">
+				<div id="div-comment-407" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/f6f9314a9beaa7ade2139bf404c63215" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.footydomain.com/" rel="external " class="url">D J Wray</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-407">
+			21. June 2012 at 06:21</a>		</div>
+
+		<p>//Intersect ray with plane Z=0 (playing surface)<br>
+//The equation of a plane is Ax + By + Cz + D = 0, represented here as [A, B, C, D]<br>
+var P=[0, 0, 1, 0];<br>
+//Find the unit normal of the plane<br>
+var mag=Math.sqrt(P[0]*P[0]+P[1]*P[1]+P[2]*P[2]);<br>
+var N=[P[0]/mag, P[1]/mag, P[2]/mag];<br>
+//Get ray length<br>
+var t=-(DotProduct(N, cameraPos) + P[3]) / DotProduct(N, dir);<br>
+var intersect=[ cameraPos[0]+t*dir[0], cameraPos[1]+t*dir[1], cameraPos[2]+t*dir[2] ];<br>
+//Test the result by drawing an image on the screen<br>
+DrawImage(myImage,intersect[0],intersect[1],intersect[2]);</p>
+<p>Regards, Darren<br>
+footydomain.com</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-409">
+				<div id="div-comment-409" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/275f5ec98c44d8beadbccade252243a5" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">far</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-409">
+			30. June 2012 at 04:58</a>		</div>
+
+		<p>could you please send me the source code ?<br>
+thaks</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-411">
+				<div id="div-comment-411" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-411">
+			2. July 2012 at 20:44</a>		</div>
+
+		<p>Hi guys, I updated my post, now providing the source code!! Enjoy,</p>
+<p>Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-440">
+				<div id="div-comment-440" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/e4b04d0b86b5f61183bf8d9efc87c95e" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">alou</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-440">
+			13. July 2012 at 21:02</a>		</div>
+
+		<p>Hi schabby,</p>
+<p>Thanks for the source code. I am trying to use your approach to pick single vertex. My application contains only one object which is a face.<br>
+But my problem is how to find out the closest vertex to the ray.<br>
+Any ideas??</p>
+<p>Cheers</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-552">
+				<div id="div-comment-552" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/ddac41d4306fb36bcad8ae1a21e0fd83" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">srinivas</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-552">
+			4. August 2012 at 14:41</a>		</div>
+
+		<p>Hi schabby,<br>
+Thanks For sharing source code.i m trying to use ur Mecanism in order to implement picking .<br>
+In my application haveing several traingles Which was drawn on the screen Using glDrawElements with mode GL_TRAINGLE_STRIP.<br>
+Now I have Give provide to pick The Particular point Information from mouse intersection. for that we need to implement ray tracing . My Problem Is When I m using Perspective Projection how i need to generate ray such way that i can find my triangle information.</p>
+<p>Any Ideas????</p>
+<p>Cheers.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="comment-556">
+				<div id="div-comment-556" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-556">
+			6. August 2012 at 12:04</a>		</div>
+
+		<p>Hi,</p>
+<p>well it is actually pretty much the same approach as outlined in my post. You need to set up the ray and test for intersections with each triangle in world space. Triangle intersection can be computed in closed form, meaning that there is a formula that spits out true/false for a given triangle and line. You will have to google the formula though <img src="./OpenGL Picking in 3D_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+<p>Hope this helps,</p>
+<p>Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-557">
+				<div id="div-comment-557" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/9014a6749f1cf6c2e79ed8f08ab78b38" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn"><a href="http://www.twitter.com/pardoman" rel="external " class="url">pardoman</a></cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-557">
+			7. August 2012 at 22:35</a>		</div>
+
+		<p>Thanks for the code provided, it was super helpful.</p>
+<p>A problem we found was that there is a problem when Near is different to "1".<br>
+The line that reads: pos = cameraPos + view + h*x + v*y<br>
+Should be: pos = cameraPos + (view * Near) + h*x + v*y</p>
+<p>Thanks!</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-576">
+				<div id="div-comment-576" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/176608a1465a72bb9c156bc284dab4ff" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Laykun</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-576">
+			29. August 2012 at 11:45</a>		</div>
+
+		<p>Post 23 by Chris completely fixed the issue I was having, you should definitely alter your source and pseudo code. I believe pardoman also has the same solution.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-578">
+				<div id="div-comment-578" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-578">
+			30. August 2012 at 15:07</a>		</div>
+
+		<p>Hi,</p>
+<p>thanks for your comment. I will update my post accordingly!</p>
+<p>btw, I am revising my tutorials at the moment to bring them up to date with OpenGL 4.0. Picking/Selection will work slightly different then, because one can derive most of the stuff right of the view matrix. </p>
+<p>Cheers,</p>
+<p>Johannes</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-591">
+				<div id="div-comment-591" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/80bd93f276f6c57d30b351400ca7e9e7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Ray</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-591">
+			10. September 2012 at 16:52</a>		</div>
+
+		<p>Good afternoon. </p>
+<p>I've tried to understand how your provided source code works, but no luck <img src="./OpenGL Picking in 3D_files/icon_sad.gif" alt=":(" class="wp-smiley"> </p>
+<p>pickingRay.getDirection().sub(position);<br>
+Since provided vector class does not have this method, i understand it should be same as</p>
+<p>pickingRay.getDirection().sub(pickingRay.getDirection(), position); ?</p>
+<p>Also, how does exactly "intersection" checking work? Do i just feed empty float array to intersectionWithXyPlane and then check numbers for something?</p>
+<p>Is there a possibility for you to post full source code?</p>
+<p>Cheers,<br>
+Ray</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-619">
+				<div id="div-comment-619" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b1a7b38e3b72c46a1f3c6f1c7abe66cd" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">zz</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-619">
+			24. September 2012 at 00:19</a>		</div>
+
+		<p>Great stuff! Thank you.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-702">
+				<div id="div-comment-702" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/90fe82a61d1ded30fa48f682a6d3685b" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Virus</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-702">
+			25. November 2012 at 12:55</a>		</div>
+
+		<p>Hi. I didn't find the source code,<br>
+please send me it</p>
+<p>Cheers,<br>
+Astemir</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1" id="comment-703">
+				<div id="div-comment-703" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/b018d450a1b10a92c4d72789eb763de7" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">schabby</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-703">
+			26. November 2012 at 11:41</a>		</div>
+
+		<p>Hi Gabriele, the source code is "in-line" in the post, no download <img src="./OpenGL Picking in 3D_files/icon_smile.gif" alt=":)" class="wp-smiley">  Best, J</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-730">
+				<div id="div-comment-730" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/860af85cfc8fa04680212b444bf10a66" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Pankaj</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-730">
+			13. December 2012 at 14:39</a>		</div>
+
+		<p>It's nice tutorial,<br>
+Can you please provide source code for same to me.<br>
+Thanks</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-744">
+				<div id="div-comment-744" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/e865e487359676c77e4c66abc260ff61" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">YOM</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-744">
+			11. January 2013 at 16:02</a>		</div>
+
+		<p>Can you please provide source code for same to me.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-770">
+				<div id="div-comment-770" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/6d9ed1e88d2955493c02325d61b8722d" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">John Connors</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-770">
+			3. April 2013 at 18:23</a>		</div>
+
+		<p>Only one thing - in OpenGL, the Y-axis runs from the bottom to the top of NDC coordinate space, and from the top to the bottom of screen space - you have to invert Y to make this work correctly for OpenGL</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-783">
+				<div id="div-comment-783" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/04e76d8e657afb40f833028c351d279b" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Tjoma</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-783">
+			15. May 2013 at 13:56</a>		</div>
+
+		<p>Hey,<br>
+nice tutorial it help me alot to understand it. But i dont understand how intersectionWithXyPlane(float[]) works.<br>
+Were i call this function? maybe it is possiblie tell how i can bind it into an mouseclick event. what function i need to call to get the cordinates in opengl.</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment even thread-even depth-1" id="comment-792">
+				<div id="div-comment-792" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/92840b4e7db56fc62cd7e7a8d5071174" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">Alex</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-792">
+			25. May 2013 at 10:05</a>		</div>
+
+		<p>I try to implement ray picking for Ortho projection. </p>
+<p>How do I compute the lengths of h and v in the view port. The view angle is for orthonormal projection 0. </p>
+<p>So the equation vLength = tan( rad / 2 ) * nearClippingPlaneDistance can not be used anymore...</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-793">
+				<div id="div-comment-793" class="comment-body">
+				<div class="comment-author vcard">
+		<img alt="" src="./OpenGL Picking in 3D_files/d6bfa53e50a69a4f7ac3ee74afb1b4d2" class="avatar avatar-32 photo" height="32" width="32">		<cite class="fn">K Hamdou</cite> <span class="says">says:</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://schabby.de/picking-opengl-ray-tracing/comment-page-1/#comment-793">
+			26. May 2013 at 00:58</a>		</div>
+
+		<p>What a great work!!!!!<br>
+well done, I am intrigued to see the code. could you please send it to me. baamiis7 at gmail dot com.</p>
+<p>Khalid</p>
+
+		<div class="reply">
+				</div>
+				</div>
+		</li>
+        </ol>
+        <div class="navigation">
+            <div class="alignleft"></div>
+            <div class="alignright"></div>
+        </div>
+    
+	<!--ende der abfrage gibt es kommentare-->
+
+
+
+ 
+<div id="respond">
+	<h2>Post Comment</h2>
+	<div id="cancel-comment-reply">
+		<small><a rel="nofollow" id="cancel-comment-reply-link" href="http://schabby.de/picking-opengl-ray-tracing/#respond" style="display:none;">Click here to cancel reply.</a><small>
+	</small></small></div><small><small>
+
+	
+	<form action="http://schabby.de/wp-comments-post.php" method="post" id="commentform">
+				
+		<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required="true">
+		<label for="author"><small>Name (erforderlich)</small></label></p>
+	
+		<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required="true">
+		<label for="email"><small>Mail (not visible) (required)</small></label></p>
+
+		<p><input type="text" name="url" id="url" value="" size="22" tabindex="3">
+		<label for="url"><small>Website</small></label></p>
+			
+		
+		<!--<p><small><strong>XHTML:</strong> You can use these Tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+
+		<p><textarea name="comment" id="comment" cols="77" rows="8" tabindex="4"></textarea></p>
+
+					<p><strong>Please notice:</strong> Comments are moderated by an Admin.</p>
+		
+		<p><input name="submit" type="submit" id="submit" tabindex="5" value="Send Comment">
+			<input type="hidden" name="comment_post_ID" value="964" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+ 
+		</p>
+		<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="5ebde743f1"></p>
+	</form></small></small>
+</div><!--id respond end-->
+
+</div>
+
+<!-- <p align="center"> </p> -->
+
+
+<!-- Pagebar -->
+<span>
+<div class="weiter"></div>
+</span>
+<!-- / Pagebar --><br>
+
+
+
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0183226991448180";
+/* 468x60, Erstellt 01.12.09 */
+google_ad_slot = "2839320191";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript" src="./OpenGL Picking in 3D_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px"><ins id="aswift_1_anchor" style="display:block;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px"><iframe width="468" height="60" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;"></iframe></ins></ins></center>
+
+</div>
+		<div style="clear:both;"></div>	
+		</div>
+		</div>
+	</div>
+
+<div class="ende"><div class="ende2">
+
+	<div class="ende2">
+
+<br> 
+<br> 
+
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./OpenGL Picking in 3D_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10305566-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<!-- google +1 button -->
+<script type="text/javascript" src="./OpenGL Picking in 3D_files/plusone.js" gapi_processed="true"></script>
+
+<!-- Facebook -->
+<div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_http" frameborder="0" allowtransparency="true" scrolling="no" id="fb_xdm_frame_http" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tab-index="-1" style="border: none;" src="./OpenGL Picking in 3D_files/xd_arbiter.htm"></iframe><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" scrolling="no" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tab-index="-1" style="border: none;" src="./OpenGL Picking in 3D_files/xd_arbiter(1).htm"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+</div> </div>
+
+
+
+
+
+
+<!-- Dynamic page generated in 2.692 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2013-07-10 04:14:41 -->
+
+<!-- super cache --></body></html>

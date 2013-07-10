@@ -1,0 +1,734 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0063)http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/style.css">
+<link type="text/css" rel="stylesheet" href="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/common2.css">
+<link type="text/css" rel="stylesheet" href="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/shStyle.css">
+<link type="text/css" rel="stylesheet" href="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/customcss.aspx">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/graphics/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/graphics/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/graphics/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/gpt.js"></script><script type="text/javascript" async="" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/ga.js"></script><script type="text/javascript" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/encoder.js"></script><script src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">
+var currentBlogApp = 'graphics';
+</script>
+<script src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/common.js" type="text/javascript"></script> 
+<script src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/json2.js" type="text/javascript"></script>
+<script type="text/javascript" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/syntaxHighlighter.js"></script>
+<script async="" type="text/javascript" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/google_ads_gpt.js"></script><script type="text/javascript" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/osd.js"></script></head>
+<body>
+<a name="top"></a>
+
+<div id="wrapper">
+<div id="header">
+
+<div id="top">
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/graphics/">青春都一饷，忍把浮名，换了代码轻狂。</a></h1>
+<div id="subtitle">关注DirectX</div>
+</div>
+<div id="sub">
+<div class="BlogStats">随笔 - 185, 文章 - 65, 评论 - 1156, 引用 - 0</div>
+</div>
+
+
+
+</div>
+<div id="main_container">
+<div id="main_content">
+<div id="content">
+	
+	
+	<div class="post">
+		<h2>
+			<a id="cb_post_title_url" href="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园.htm">射线和三角形的相交检测（ray triangle intersection test）</a>
+		</h2>
+		<div class="postbody">
+		<div id="cnblogs_post_body"><p>本文以<a href="http://www.cs.virginia.edu/~gfx/Courses/2003/ImageSynthesis/papers/Acceleration/Fast%20MinimumStorage%20RayTriangle%20Intersection.pdf">Fast, Minimum Storage Ray Triangle Intersection</a>为参考，在此感谢原作者，大家也可以直接阅读原版。</p>
+<h1>概述</h1>
+<p>射线和三角形的相交检测是游戏程序设计中一个常见的问题，最典型的应用就是拾取(Picking)，本文介绍一个最常见的方法，这个方法也是DirectX中采用的方法，该方法速度快，而且存储空间少。先讲述理论，然后给出对应的代码实现。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080908384033.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080908385816.png" alt=""></p>
+<h1>理论部分</h1>
+<h2>一个直观的方法</h2>
+<p>我想大多数人在看到这个问题时，可能都会想到一个简单而直观的方法：首先判断射线是否与三角形所在的平面相交，如果相交，再判断交点是否在三角形内。</p>
+<p><a href="http://www.cnblogs.com/graphics/archive/2009/10/17/1585281.html">判断射线是否与平面相交</a></p>
+<p><a href="http://www.cnblogs.com/graphics/archive/2010/08/05/1793393.html">判断点是否在三角形内</a></p>
+<p>但是，上面的方法效率并不很高，因为需要一个额外的计算，那就是计算出三角形所在的平面，而下面要介绍的方法则可以省去这个计算。</p>
+<h2>本文的方法</h2>
+<p>接下来会涉及到一些数学知识，不过没关系，我会详细解释每一个步骤，不至于太晦涩，只要您不觉得烦就行了，好了开始！</p>
+<p>射线的参数方程如下，其中O是射线的起点，D是射线的方向。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823241736.jpg" alt=""></p>
+<p>我们可以这样理解射线，一个点从起点O开始，沿着方向D移动任意长度，得到终点R，根据t值的不同，得到的R值也不同，所有这些不同的R值便构成了整条射线，比如下面的射线，起点是P0，方向是u，p0 + tu也就构成了整条射线。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/o_ray.JPG" alt="" width="309" height="276"></p>
+<p>三角形的参数方程如下，其中V0，V1和V2是三角形的三个点，u, v是V1和V2的权重，1-u-v是V0的权重，并且满足u&gt;=0, v &gt;= 0,u+v&lt;=1。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823243118.jpg" alt=""></p>
+<p>确切的说，上面的方程是三角形及其内部所有点的方程，因为三角形内任意一点都可以理解为从顶点V0开始，沿着边V0V1移动一段距离，然后再沿着边V0V2移动一段距离，然后求他们的和向量。至于移动多大距离，就是由参数u和v控制的。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080517455778.png" alt="" width="467" height="297"></p>
+<p>于是，求射线与三角形的交点也就变成了解下面这个方程-其中t,u,v是未知数，其他都是已知的</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823245595.jpg" alt=""></p>
+<p>移项并整理，将t,u,v提取出来作为未知数，得到下面的线性方程组</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823250841.jpg" alt=""></p>
+<p>现在开始解这个方程组，这里要用到两个知识点，一是克莱姆法则，二是向量的混合积。</p>
+<p>令E1 = V1 - V0，E2 = V2 - V0，T = O - V0上式可以改写成</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823253676.jpg" alt=""></p>
+<p>根据克莱姆法则，可得到t,u,v的解分别是</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823260078.jpg" alt=""></p>
+<p>将这三个解联合起来写就是</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823261377.jpg" alt=""></p>
+<p>根据混合积公式</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823262395.jpg" alt=""></p>
+<p>上式可以改写成</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823325460.jpg" alt=""></p>
+<p>令</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823275241.jpg" alt=""></p>
+<p>得到最终的公式，这便是下面代码中用到的最终公式了，之所以提炼出P和Q是为了避免重复计算</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080823280278.jpg" alt=""></p>
+<h1>代码部分</h1>
+<p>理论部分阐述完毕，开始上代码，这份代码来自DirectX SDK中的Demo，名字叫做Picking(拾取)，该函数位于文件Pick.cpp的最末尾。这个函数有一个特点，就是判断语句特别多，因为对于一个频繁被调用的函数来说，效率是最重要的，这么多判断就是为了在某个条件不满足时，及时返回，避免后续不必要的计算。</p>
+<div class="cnblogs_code"><div>按 Ctrl+C 复制代码</div><textarea style="width: 590px; height: 600px; font-family: &#39;Courier New&#39;; font-size: 12px; line-height: 1.5;"></textarea><div>按 Ctrl+C 复制代码</div></div>
+<h2>参数说明</h2>
+<p>输入参数：前两个参数orig和dir是射线的起点和方向，中间三个参数v0，v1和v2是三角形的三个顶点。&nbsp;</p>
+<p>输出参数：t是交点对应的射线方程中的t值，u，v则是交点的纹理坐标值</p>
+<h2>代码说明</h2>
+<p>变量的命名方式：为了方便阅读，代码中的变量命名与上面公式中的变量保持一致，如E1，E2，T等。</p>
+<p>变量det表示矩阵的行列式值</p>
+<p>27-35行用来确保det&gt;0，如果det&lt;0则令det = -det，并对T做相应的调整，这样做是为了方便后续计算，否则的话需要分别处理det&gt;0和det&lt;0两种情况。</p>
+<p>第38行，注意浮点数和0的比较，一般不用 == 0的方式，而是给定一个Epsilon值，并与这个值比较。</p>
+<p>第43行，这里实际上u还没有计算完毕，此时的值是Dot(P,T)，如果Dot(P,T) &gt; det, 那么u &gt; 1，无交点。</p>
+<p>第51行，要确保u + v &lt;= 1，也即 [Dot(P,T) + Dot(Q, D)] / det 必须不能大于1，否则无交点。</p>
+<p>第57-60行，走到这里时，表明前面的条件都已经满足，开始计算t, u, v的最终值。</p>
+<h2>交点坐标</h2>
+<p>根据上面代码求出的t,u,v的值，交点的最终坐标可以用下面两种方法计算</p>
+<p>O + Dt</p>
+<p>(1 - u - v)V0 + uV1 + vV2</p>
+<h1>后记</h1>
+<p>在本文开头已经说了，射线和三角形的相交检测最典型的应用就是拾取，比如在一个三维场景中用鼠标选择某个物体。那么拾取是如何实现的呢？我们知道在物体的三维模型表示中，三角形是最小的几何图元，最小意味着不可再分，也就是说任何模型，无论它多么复杂，都可以由若干个三角形组合而成。拾取过程实际是判断拾取射线是否与模型相交，而这又可以转化为-只要射线与模型中的任何一个三角形相交即可。下面是模型的线框表示法，可见如果想要判断某条射线是否与这个茶壶相交，只要判断该射线是否与茶壶模型中某个三角形相交即可。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080913212222.png" alt=""></p>
+<p>需要注意的是，虽然射线和三角形的相交检测可以用来实现拾取，但是大多数程序并不采用这个方法，原因是这个方法效率很低，我们可以设想，一个大型的3D在线游戏，它的模型数量以及复杂程度都是很高的，如果用这种方法来判断，需要对模型中每个三角形都做一次判断，效率极其低下，一种可行的方案是，用包围球或者包围盒来代替，计算出能容纳模型的最小球体或者矩形体，只要判断出射线与包围球或者包围盒相交，我们就认为射线与模型相交，这样效率会显著提高，只是精确度上会有一定误差，但是足以满足多数程序的需要。</p>
+<p><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/2010080913151081.png" alt=""></p>
+<p>&nbsp;</p>
+<p>Happy Coding</p>
+<p>== The End ==</p></div><div id="MySignature"><div id="ZddSignature">
+<div>作者：<a href="http://www.cnblogs.com/graphics/" target="_blank">zdd</a></div>
+<div>出处：<a href="http://www.cnblogs.com/graphics/" target="_blank">http://www.cnblogs.com/graphics/</a>
+<div>
+<div>本文版权归作者和博客园共有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利.</div>
+</div>
+</div>
+</div></div>
+<script type="text/javascript">
+var isLogined = false;
+var cb_blogId = 56021;
+var cb_entryId = 1795348;
+var cb_blogApp = currentBlogApp;
+var cb_blogUserGuid = "d8062527-dd3a-de11-9510-001cf0cd104b";
+var cb_entryCreatedDate = '2010/8/9 13:41:00';
+var enableGoogleAd = true;
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+</script>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="blog_post_info"><div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/graphics/category/237291.html">Math</a>, <a href="http://www.cnblogs.com/graphics/category/189592.html">图形学</a>, <a href="http://www.cnblogs.com/graphics/category/228412.html">DirectX</a></div>
+<div id="EntryTag"></div>
+<div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(cb_entryId,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/zdd" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="digg_block">
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/graphics/" target="_blank"><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/u64257.jpg" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/graphics/">zdd</a><br>
+<a href="http://home.cnblogs.com/u/graphics/followees">关注 - 13</a><br>
+<a href="http://home.cnblogs.com/u/graphics/followers">粉丝 - 329</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor">荣誉：<a href="http://www.cnblogs.com/expert/" target="_blank">推荐博客</a></div>
+<div id="author_profile_follow">
+<a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+	<div class="diggit" onclick="votePost(cb_entryId,&#39;Digg&#39;)"> 
+		<span class="diggnum" id="digg_count">1</span>
+	</div>
+	<div class="buryit" onclick="votePost(cb_entryId,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/graphics/archive/2010/08/05/1793393.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/graphics/archive/2010/08/05/1793393.html" title="发布于2010-08-05 17:54">判断点是否在三角形内</a><br><a href="http://www.cnblogs.com/graphics/archive/2010/08/12/1797953.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/graphics/archive/2010/08/12/1797953.html" title="发布于2010-08-12 11:20">C/C++数据对齐</a><br></div>
+</div>
+<script type="text/javascript">
+    //SyntaxHighlighter.config.strings.expandSource = '<span><img src="http://static.cnblogs.com/images/expand-code.gif" alt="" class="expand-code-icon"/>View Code</span>';
+    $(function () {  
+        loadViewCount(cb_entryId);
+        fixPostBodyFormat();
+        loadAdUnderPost();
+        loadBlogSignature();
+        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);        
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);        
+    });
+</script>
+		</div>
+		<p class="postfoot">
+			posted on <span id="post-date">2010-08-09 13:41</span> <a href="http://www.cnblogs.com/graphics/">zdd</a> 阅读(<span id="post_view_count">2995</span>) 评论(<span id="post_comment_count">11</span>)  <a href="http://www.cnblogs.com/graphics/admin/EditPosts.aspx?postid=1795348" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#" onclick="AddToWz(1795348);return false;">收藏</a>
+		</p>
+	</div>
+	<script src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/1795348" type="text/javascript"></script>
+	
+	<div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<a name="评论"></a>
+<div id="comments">
+<h3>评论</h3>
+	
+	
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#1890085" class="layer">#1楼</a><a name="1890085" id="comment_anchor_1890085"></a>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_1890085" class="blog_comment_body">阅读人数都284人了，太高深了，有时间再研究</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(1890085,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(1890085,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_1890085_avatar" style="display:none;">http://pic.cnitblog.com/face/u97335.jpg</span>
+				<div class="postfoot">
+					 <span class="comment_date">2010-08-09 16:51</span> | <a id="a_comment_author_1890085" href="http://www.cnblogs.com/-Autumn/" target="_blank">小福星</a> <a href="http://space.cnblogs.com/msg/send/%e5%b0%8f%e7%a6%8f%e6%98%9f" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#1890248" class="layer">#2楼</a><a name="1890248" id="comment_anchor_1890248"></a>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_1890248" class="blog_comment_body">确实不错</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(1890248,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(1890248,&#39;Bury&#39;,this)">反对(0)</a></div>
+				<div class="postfoot">
+					 <span class="comment_date">2010-08-09 22:46</span> | <a id="a_comment_author_1890248" href="http://home.cnblogs.com/u/80898/" target="_blank">蓝蓝的天</a> <a href="http://space.cnblogs.com/msg/send/%e8%93%9d%e8%93%9d%e7%9a%84%e5%a4%a9" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#1890304" class="layer">#3楼</a><a name="1890304" id="comment_anchor_1890304"></a>[<span class="louzhu">楼主</span>]
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_1890304" class="blog_comment_body">@小福星<br>@蓝蓝的天<br>多谢喜欢！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(1890304,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(1890304,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_1890304_avatar" style="display:none;">http://pic.cnitblog.com/face/u64257.jpg?id=21102348</span>
+				<div class="postfoot">
+					 <span class="comment_date">2010-08-10 07:52</span> | <a id="a_comment_author_1890304" href="http://www.cnblogs.com/graphics/" target="_blank">zdd</a> <a href="http://space.cnblogs.com/msg/send/zdd" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#1906410" class="layer">#4楼</a><a name="1906410" id="comment_anchor_1906410"></a>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_1906410" class="blog_comment_body">逛了下博主的博客， 博主这才是高深啊.反观我,就是“堆积木”了.</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(1906410,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(1906410,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_1906410_avatar" style="display:none;">http://pic.cnitblog.com/face/u124057.jpg</span>
+				<div class="postfoot">
+					 <span class="comment_date">2010-09-01 20:38</span> | <a id="a_comment_author_1906410" href="http://www.cnblogs.com/sld666666/" target="_blank">sld666666</a> <a href="http://space.cnblogs.com/msg/send/sld666666" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#1906432" class="layer">#5楼</a><a name="1906432" id="comment_anchor_1906432"></a>[<span class="louzhu">楼主</span>]
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_1906432" class="blog_comment_body"><fieldset class="comment_quote"><legend><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#1906410" title="查看引用原文">引用</a></legend>sld666666：逛了下博主的博客， 博主这才是高深啊.反观我,就是“堆积木”了.</fieldset><br>兄弟过奖了，我也是初学者，希望有机会多多交流！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(1906432,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(1906432,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_1906432_avatar" style="display:none;">http://pic.cnitblog.com/face/u64257.jpg?id=21102348</span>
+				<div class="postfoot">
+					 <span class="comment_date">2010-09-01 21:17</span> | <a id="a_comment_author_1906432" href="http://www.cnblogs.com/graphics/" target="_blank">zdd</a> <a href="http://space.cnblogs.com/msg/send/zdd" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2370197" class="layer">#6楼</a><a name="2370197" id="comment_anchor_2370197"></a>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_2370197" class="blog_comment_body">文章的内容和《Fast, Minimum Storage RayTriangle Intersection》很相像啊！不过翻译的还不错。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2370197,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2370197,&#39;Bury&#39;,this)">反对(0)</a></div>
+				<div class="postfoot">
+					 <span class="comment_date">2012-05-05 15:37</span> | <a id="a_comment_author_2370197" href="http://home.cnblogs.com/u/405801/" target="_blank">Elan.Ren.Chaos</a> <a href="http://space.cnblogs.com/msg/send/Elan.Ren.Chaos" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2370446" class="layer">#7楼</a><a name="2370446" id="comment_anchor_2370446"></a>[<span class="louzhu">楼主</span>]
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_2370446" class="blog_comment_body"><fieldset class="comment_quote"><legend><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2370197" title="查看引用原文">引用</a></legend>Elan.Ren.Chaos：文章的内容和《Fast, Minimum Storage RayTriangle Intersection》很相像啊！不过翻译的还不错。</fieldset><br>老兄好眼力，的确是以这篇文章为依据写的，已经加注了出处，多谢提醒。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2370446,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2370446,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2370446_avatar" style="display:none;">http://pic.cnitblog.com/face/u64257.jpg?id=21102348</span>
+				<div class="postfoot">
+					 <span class="comment_date">2012-05-06 08:13</span> | <a id="a_comment_author_2370446" href="http://www.cnblogs.com/graphics/" target="_blank">zdd</a> <a href="http://space.cnblogs.com/msg/send/zdd" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636101" class="layer">#8楼</a><a name="2636101" id="comment_anchor_2636101"></a>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_2636101" class="blog_comment_body">用向量表示三角形，这个方法真巧啊</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2636101,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2636101,&#39;Bury&#39;,this)">反对(0)</a></div>
+				<div class="postfoot">
+					 <span class="comment_date">2013-03-16 16:33</span> | <a id="a_comment_author_2636101" href="http://home.cnblogs.com/u/302907/" target="_blank">子夜东风</a> <a href="http://space.cnblogs.com/msg/send/%e5%ad%90%e5%a4%9c%e4%b8%9c%e9%a3%8e" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636106" class="layer">#9楼</a><a name="2636106" id="comment_anchor_2636106"></a>[<span class="louzhu">楼主</span>]
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_2636106" class="blog_comment_body"><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636101" title="查看所回复的评论">@</a>子夜东风<br><fieldset class="comment_quote"><legend><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636101" title="查看引用原文">引用</a></legend>用向量表示三角形，这个方法真巧啊</fieldset><br>确实，老兄真勤奋，大周末的还在写代码？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2636106,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2636106,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2636106_avatar" style="display:none;">http://pic.cnitblog.com/face/u64257.jpg?id=21102348</span>
+				<div class="postfoot">
+					 <span class="comment_date">2013-03-16 16:40</span> | <a id="a_comment_author_2636106" href="http://www.cnblogs.com/graphics/" target="_blank">zdd</a> <a href="http://space.cnblogs.com/msg/send/zdd" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636150" class="layer">#10楼</a><a name="2636150" id="comment_anchor_2636150"></a>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_2636150" class="blog_comment_body"><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636106" title="查看所回复的评论">@</a>zdd<br>要找工作了，所以来学习一下，哈哈</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2636150,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2636150,&#39;Bury&#39;,this)">反对(0)</a></div>
+				<div class="postfoot">
+					 <span class="comment_date">2013-03-16 18:59</span> | <a id="a_comment_author_2636150" href="http://home.cnblogs.com/u/302907/" target="_blank">子夜东风</a> <a href="http://space.cnblogs.com/msg/send/%e5%ad%90%e5%a4%9c%e4%b8%9c%e9%a3%8e" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+			<div class="post">
+				<h2>
+					<a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636168" class="layer">#11楼</a><a name="2636168" id="comment_anchor_2636168"></a>[<span class="louzhu">楼主</span>]<span id="comment-maxId" style="display:none;">2636168</span><span id="comment-maxDate" style="display:none;">2013/3/16 19:25:41</span>
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</h2>
+				<div id="comment_body_2636168" class="blog_comment_body"><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636150" title="查看所回复的评论">@</a>子夜东风<br><fieldset class="comment_quote"><legend><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2636150" title="查看引用原文">引用</a></legend>@zdd<br>要找工作了，所以来学习一下，哈哈</fieldset><br>预祝你找到好工作！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2636168,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2636168,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2636168_avatar" style="display:none;">http://pic.cnitblog.com/face/u64257.jpg?id=21102348</span>
+				<div class="postfoot">
+					 <span class="comment_date">2013-03-16 19:25</span> | <a id="a_comment_author_2636168" href="http://www.cnblogs.com/graphics/" target="_blank">zdd</a> <a href="http://space.cnblogs.com/msg/send/zdd" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+				</div>
+			</div>
+		
+</div>
+<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+
+<script type="text/javascript">
+    if (typeof commentManager === 'undefined') {
+        commentManager = new blogCommentManager();
+    }
+    commentManager.loadCommentForm();   
+</script>
+
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="程序员的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="ad_under_post_holder">
+<div id="google_ad_c1" class="c_ad_block">
+    <!-- cnblogs_blogpost_C1_sitehome -->
+    <div id="div-gpt-ad-1346480159711-0" style="width: 300px; height: 250px;">
+    
+    <iframe id="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0" name="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" src="javascript:"<html><body style='background:transparent'></body></html>""></iframe><iframe id="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0__hidden__" name="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0__hidden__" width="0" height="0" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom; visibility: hidden; display: none;" src="javascript:"<html><body style='background:transparent'></body></html>""></iframe></div>
+</div>
+<div id="blog_news_kb"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/182102/" target="_blank">天猫国际站现身</a><br> ·  <a href="http://news.cnblogs.com/n/182101/" target="_blank">淘宝公布贷款黑名单：逾期还款将被永久封号</a><br> ·  <a href="http://news.cnblogs.com/n/182100/" target="_blank">周鸿祎：锚定梦想，一切变简单</a><br> ·  <a href="http://news.cnblogs.com/n/182099/" target="_blank">创业者如何让创投「爱上你」</a><br> ·  <a href="http://news.cnblogs.com/n/182098/" target="_blank">诺基亚Here地图套装全面进军WP平台</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/182047/" target="_blank">谈谈对BPM的理解</a><br> ·  <a href="http://kb.cnblogs.com/page/175976/" target="_blank">编程从业五年的十四条经验，句句朴实</a><br> ·  <a href="http://kb.cnblogs.com/page/173038/" target="_blank">几种经典的网络服务器架构模型的分析与比较</a><br> ·  <a href="http://kb.cnblogs.com/page/173241/" target="_blank">学徒程序员</a><br> ·  <a href="http://kb.cnblogs.com/page/181719/" target="_blank">云计算服务模型，第 3 部分: 软件即服务(PaaS)</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+    <!-- cnblogs_blogpost_C2_sitehome -->
+    <div id="div-gpt-ad-1346479110744-1" style="width: 468px; height: 60px;">
+    
+    <iframe id="google_ads_iframe_/1090369/cnblogs_blogpost_C2_sitehome_0" name="google_ads_iframe_/1090369/cnblogs_blogpost_C2_sitehome_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" src="javascript:"<html><body style='background:transparent'></body></html>""></iframe></div>
+</div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+</div>
+
+
+
+
+
+</div>
+</div>
+<div id="leftmenu">
+
+
+<h3>导航</h3>
+<ul>
+<li>
+<a id="MyLinks1_HomeLink" href="http://www.cnblogs.com/">博客园</a></li>
+<li>
+<a id="MyLinks1_MyHomeLink" class="two_words" href="http://www.cnblogs.com/graphics/">首页</a></li>
+<li>
+<a id="MyLinks1_NewPostLink" rel="nofollow" href="http://www.cnblogs.com/graphics/admin/EditPosts.aspx?opt=1">新随笔</a></li>
+<li>
+<a id="MyLinks1_ContactLink" accesskey="9" class="two_words" rel="nofollow" href="http://space.cnblogs.com/msg/send/zdd">联系</a></li>
+<li>
+<a id="MyLinks1_Syndication" class="two_words" href="http://www.cnblogs.com/graphics/rss">订阅</a>
+<a id="MyLinks1_XMLLink" href="http://www.cnblogs.com/graphics/rss"><img src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/xml.gif" alt="订阅"></a>
+</li>
+<li>
+<a id="MyLinks1_Admin" class="two_words" rel="nofollow" href="http://www.cnblogs.com/graphics/admin/EditPosts.aspx">管理</a></li>
+</ul>
+
+<div id="blog-calendar-block" style=""><div id="blog-calendar"><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="日历">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2010/07/01&#39;);return false;">&lt;</a></td><td align="center">2010年8月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2010/09/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">25</td><td class="CalOtherMonthDay" align="center">26</td><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td></tr><tr><td class="CalWeekendDay" align="center">1</td><td align="center">2</td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/03.html"><u>3</u></a></td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/04.html"><u>4</u></a></td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/05.html"><u>5</u></a></td><td align="center">6</td><td class="CalWeekendDay" align="center">7</td></tr><tr><td class="CalWeekendDay" align="center">8</td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/09.html"><u>9</u></a></td><td align="center">10</td><td align="center">11</td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/12.html"><u>12</u></a></td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/13.html"><u>13</u></a></td><td class="CalWeekendDay" align="center">14</td></tr><tr><td class="CalWeekendDay" align="center">15</td><td align="center">16</td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/17.html"><u>17</u></a></td><td align="center">18</td><td align="center">19</td><td align="center">20</td><td class="CalWeekendDay" align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/21.html"><u>21</u></a></td></tr><tr><td class="CalWeekendDay" align="center">22</td><td align="center">23</td><td align="center"><a href="http://www.cnblogs.com/graphics/archive/2010/08/24.html"><u>24</u></a></td><td align="center">25</td><td align="center">26</td><td align="center">27</td><td class="CalWeekendDay" align="center">28</td></tr><tr><td class="CalWeekendDay" align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr>
+</tbody></table></div>
+</div>
+<meta name="vs_showGrid" content="False">
+
+<h3>公告</h3>
+<div id="blog-news" style=""><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/graphics/">zdd</a><br>园龄：<a href="http://home.cnblogs.com/u/graphics/" title="入园时间：2009-05-07">4年2个月</a><br>荣誉：<a href="http://www.cnblogs.com/expert/">推荐博客</a><br>粉丝：<a href="http://home.cnblogs.com/u/graphics/followers/">329</a><br>关注：<a href="http://home.cnblogs.com/u/graphics/followees/">13</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;d8062527-dd3a-de11-9510-001cf0cd104b&#39;)">+加关注</a></div></div></div>
+
+<div id="blog-sidecolumn">
+
+<div class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+
+</div>
+
+
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+
+		<li><a id="ctl01_rptMainLinks_lnkLinkItem_0" href="http://www.cnblogs.com/graphics/MyPosts.html">我的随笔</a></li>
+	
+		<li><a id="ctl01_rptMainLinks_lnkLinkItem_1" href="http://www.cnblogs.com/graphics/MyComments.html">我的评论</a></li>
+	
+		<li><a id="ctl01_rptMainLinks_lnkLinkItem_2" title="我发表过评论的随笔" href="http://www.cnblogs.com/graphics/OtherPosts.html">我的参与</a></li>
+	
+		<li><a id="ctl01_rptMainLinks_lnkLinkItem_3" href="http://www.cnblogs.com/graphics/RecentComments.html">最新评论</a></li>
+	
+		<li><a id="ctl01_rptMainLinks_lnkLinkItem_4" href="http://www.cnblogs.com/graphics/tag/">我的标签</a></li>
+	
+</ul>
+<div id="itemListLin_con" style="display:none;">
+
+</div>
+		<h3>随笔分类</h3>
+		
+				<ul>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/graphics/category/248605.html">C/C++(19)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/graphics/category/412805.html">D3D10(3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/graphics/category/412806.html">D3D11(7)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/graphics/category/412804.html">D3D9(7)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/graphics/category/474620.html">Demo(6)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/graphics/category/412802.html">Direct2D(19)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/graphics/category/455101.html">DirectInput(1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/graphics/category/412808.html">DirectWrite(11)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_8" href="http://www.cnblogs.com/graphics/category/228412.html">DirectX(87)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_9" href="http://www.cnblogs.com/graphics/category/412799.html">DXGI(2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_10" href="http://www.cnblogs.com/graphics/category/412801.html">HLSL(1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_11" href="http://www.cnblogs.com/graphics/category/237291.html">Math(20)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_12" href="http://www.cnblogs.com/graphics/category/412800.html">Shader(4)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_13" href="http://www.cnblogs.com/graphics/category/415641.html">Windows编程(1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_14" href="http://www.cnblogs.com/graphics/category/419677.html">XAudio2(4)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_15" href="http://www.cnblogs.com/graphics/category/189594.html">编程语言(10)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_16" href="http://www.cnblogs.com/graphics/category/189595.html">代码片段(25)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_17" href="http://www.cnblogs.com/graphics/category/189593.html">数据结构与算法(38)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_18" href="http://www.cnblogs.com/graphics/category/189592.html">图形学(19)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_0_Link_19" href="http://www.cnblogs.com/graphics/category/215769.html">杂(36)</a></li>
+			
+				</ul>
+			
+	
+		<h3>随笔档案</h3>
+		
+				<ul>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/graphics/archive/2013/07.html">2013年7月 (1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/graphics/archive/2013/06.html">2013年6月 (1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/graphics/archive/2013/04.html">2013年4月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/graphics/archive/2013/03.html">2013年3月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/graphics/archive/2013/02.html">2013年2月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/graphics/archive/2012/11.html">2012年11月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/graphics/archive/2012/10.html">2012年10月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/graphics/archive/2012/09.html">2012年9月 (5)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_8" href="http://www.cnblogs.com/graphics/archive/2012/08.html">2012年8月 (6)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_9" href="http://www.cnblogs.com/graphics/archive/2012/07.html">2012年7月 (5)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_10" href="http://www.cnblogs.com/graphics/archive/2012/06.html">2012年6月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_11" href="http://www.cnblogs.com/graphics/archive/2012/05.html">2012年5月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_12" href="http://www.cnblogs.com/graphics/archive/2012/04.html">2012年4月 (1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_13" href="http://www.cnblogs.com/graphics/archive/2011/09.html">2011年9月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_14" href="http://www.cnblogs.com/graphics/archive/2011/07.html">2011年7月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_15" href="http://www.cnblogs.com/graphics/archive/2011/06.html">2011年6月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_16" href="http://www.cnblogs.com/graphics/archive/2011/05.html">2011年5月 (4)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_17" href="http://www.cnblogs.com/graphics/archive/2011/04.html">2011年4月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_18" href="http://www.cnblogs.com/graphics/archive/2011/03.html">2011年3月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_19" href="http://www.cnblogs.com/graphics/archive/2011/02.html">2011年2月 (4)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_20" href="http://www.cnblogs.com/graphics/archive/2010/12.html">2010年12月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_21" href="http://www.cnblogs.com/graphics/archive/2010/11.html">2010年11月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_22" href="http://www.cnblogs.com/graphics/archive/2010/09.html">2010年9月 (1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_23" href="http://www.cnblogs.com/graphics/archive/2010/08.html">2010年8月 (11)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_24" href="http://www.cnblogs.com/graphics/archive/2010/07.html">2010年7月 (17)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_25" href="http://www.cnblogs.com/graphics/archive/2010/06.html">2010年6月 (9)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_26" href="http://www.cnblogs.com/graphics/archive/2010/05.html">2010年5月 (12)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_27" href="http://www.cnblogs.com/graphics/archive/2010/04.html">2010年4月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_28" href="http://www.cnblogs.com/graphics/archive/2010/03.html">2010年3月 (18)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_29" href="http://www.cnblogs.com/graphics/archive/2010/02.html">2010年2月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_30" href="http://www.cnblogs.com/graphics/archive/2010/01.html">2010年1月 (2)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_31" href="http://www.cnblogs.com/graphics/archive/2009/12.html">2009年12月 (3)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_32" href="http://www.cnblogs.com/graphics/archive/2009/11.html">2009年11月 (9)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_33" href="http://www.cnblogs.com/graphics/archive/2009/10.html">2009年10月 (11)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_34" href="http://www.cnblogs.com/graphics/archive/2009/09.html">2009年9月 (4)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_35" href="http://www.cnblogs.com/graphics/archive/2009/08.html">2009年8月 (1)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_36" href="http://www.cnblogs.com/graphics/archive/2009/07.html">2009年7月 (4)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_37" href="http://www.cnblogs.com/graphics/archive/2009/06.html">2009年6月 (14)</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_1_Link_38" href="http://www.cnblogs.com/graphics/archive/2009/05.html">2009年5月 (3)</a></li>
+			
+				</ul>
+			
+	
+		<h3>Game Engine</h3>
+		
+				<ul>
+			
+				<li><a id="ctl02_CatList_LinkList_2_Link_0" rel="nofollow" href="http://www.rastertek.com/tutindex.html">DX11 Tutorials</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_2_Link_1" rel="nofollow" href="http://irrlicht.sourceforge.net/">Irrlicht</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_2_Link_2" rel="nofollow" href="http://www.mathwords.com/">MathWords</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_2_Link_3" rel="nofollow" href="http://www.ogre3d.org/">Ogre</a></li>
+			
+				</ul>
+			
+	
+		<h3>缤纷世界</h3>
+		
+				<ul>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_0" rel="nofollow" href="http://www.sph.sc.edu/comd/rorden/3d.html">3D Controls</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_1" rel="nofollow" href="http://www.skytopia.com/project/fractal/mandelbrot.html">3D Fractal</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_2" rel="nofollow" href="http://www.fractal-animation.net/progz/filez.html">chaos files</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_3" rel="nofollow" href="http://www.benznet.cn/benz/education/tza/tza1.html">ChaosinChinese</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_4" rel="nofollow" href="http://www.cloth.fr.st/">Cloth Simulation</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_5" rel="nofollow" href="http://msdn.microsoft.com/en-us/directx/">DirectX Developer Center</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_6" rel="nofollow" href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee663274%28v=vs.85%29.aspx">DirectX document online</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_7" rel="nofollow" href="http://www.two-kings.de/">DX tutorials</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_8" rel="nofollow" href="http://www.euclideanspace.com/index.html">EuclideanSpace</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_9" rel="nofollow" href="http://www.fractal-animation.net/ufvp.html">Fractal Video</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_10" rel="nofollow" href="http://www.geometrictools.com/">geometrictools</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_11" rel="nofollow" href="http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml#The__define_Guard">Google C++ Style</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_12" rel="nofollow" href="http://hardcode.untergrund.net/">HardCode</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_13" rel="nofollow" href="http://www.siggraph.org/education/materials/HyperGraph/hypergraph.htm">HyperGraph</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_14" rel="nofollow" href="http://www.inframez.com/">In Framez</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_15" rel="nofollow" href="http://www.codecogs.com/latex/eqneditor.php">LatexEditor</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_16" rel="nofollow" href="http://mamedev.org/">Mame</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_17" rel="nofollow" href="http://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot Set</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_18" rel="nofollow" href="http://www.opengl.org/">OpenGL official page</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_19" rel="nofollow" href="http://www.lighthouse3d.com/opengl/index.shtml">OpenGL Tutorials</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_20" rel="nofollow" href="http://www.pouet.net/">pouet</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_21" rel="nofollow" href="http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtrace0.htm">Ray tracing</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_22" rel="nofollow" href="http://www.daionet.gr.jp/~masa/rthdribl/">Rthdribl</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_23" rel="nofollow" href="http://discuss.techinterview.org/?interview">TechInterview</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_24" rel="nofollow" href="http://www.toymaker.info/index.html">toymaker</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_25" rel="nofollow" href="http://www.w3school.com.cn/">W3SCHOOL</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_26" rel="nofollow" href="http://forums.xna.com/forums/">XNA/DirectX Forum</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_27" rel="nofollow" href="http://www.mvps.org/directx/">X-Zone</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_3_Link_28" rel="nofollow" href="http://blog.codingnow.com/">云风的Blog</a></li>
+			
+				</ul>
+			
+	
+		<h3>其他</h3>
+		
+				<ul>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_0" rel="nofollow" href="http://www.aogosoft.com/">Aogo汇编小站</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_1" rel="nofollow" href="http://channel9.msdn.com/">Channel 9</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_2" rel="nofollow" href="http://1code.codeplex.com/">Code all in one</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_3" rel="nofollow" href="http://bbs.emath.ac.cn/">Emath</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_4" rel="nofollow" href="http://www.themathcircle.org/" target="_blank">Math Circle</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_5" rel="nofollow" href="http://riverbendmath.org/modules/Finite_Games/" target="_blank">Math Game</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_6" rel="nofollow" href="http://www.microsoft.com/athome/default.aspx">Microsoft At Home</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_7" rel="nofollow" href="http://www.microsoft.com/atwork/default.aspx">Microsoft At Work</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_8" href="http://social.msdn.microsoft.com/Forums/en-US/category/windevgeneral,windevui,windevavg,windevsearch,windevsensorandtouch,windevnetworking,windevdiagnostics,windevother">Windows forum</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_4_Link_9" rel="nofollow" href="http://www.cn-dos.net/forum/">中国DOS联盟</a></li>
+			
+				</ul>
+			
+	
+		<h3>友情链接</h3>
+		
+				<ul>
+			
+				<li><a id="ctl02_CatList_LinkList_5_Link_0" rel="nofollow" href="http://www.cppblog.com/LittleStar/">LittleStart</a></li>
+			
+				<li><a id="ctl02_CatList_LinkList_5_Link_1" rel="nofollow" href="http://www.cnblogs.com/bwcat">WW老弟</a></li>
+			
+				</ul>
+			
+	
+<h3>积分与排名</h3>
+<ul>
+	<li>
+		积分 -
+		117650
+	</li><li>
+		排名 -
+		961
+	</li>
+</ul>
+
+<h3 class="catListTitle">最新评论</h3>
+<div class="RecentComment" id="RecentComments">
+	<div id="RecentCommentsBlock"><ul>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/graphics/archive/2010/12/24/1916343.html#2721187">1. Re:extern &amp;amp;ldquo;C&amp;amp;rdquo;总结</a></li>
+    <li class="recent_comment_body"><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2715708" title="查看所回复的评论">@</a>john23.net<br><fieldset class="comment_quote"><legend><a href="http://www.cnblogs.com/graphics/archive/2010/08/09/1795348.html#2715708" title="查看引用原文">引用</a></legend>感谢分享</fieldset><br>握手。</li>
+    <li class="recent_comment_author">--zdd</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/graphics/archive/2012/09/08/2676039.html#2720816">2. Re:程序员，请昂起你高贵的头！</a></li>
+    <li class="recent_comment_body">这个深有感受的啊。有些程序猿真的是很高傲。。。</li>
+    <li class="recent_comment_author">--帅的◇犯贱◆</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/graphics/archive/2013/06/28/2580832.html#2716710">3. Re:用DirectX实现魔方（一）</a></li>
+    <li class="recent_comment_body">@math_cai引用把某一面转得很快的话，那面就丢了谢谢，我再好好想一想，到底是哪里出了问题。我始终找不到固定的重现步骤。问题非常难以定位。</li>
+    <li class="recent_comment_author">--zdd</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/graphics/archive/2013/06/28/2580832.html#2716537">4. Re:用DirectX实现魔方（一）</a></li>
+    <li class="recent_comment_body">把某一面转得很快的话，那面就丢了</li>
+    <li class="recent_comment_author">--math_cai</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/graphics/archive/2010/03/19/1689675.html#2716392">5. Re:输出循环小数</a></li>
+    <li class="recent_comment_body">@Hacky引用http://zh.wikipedia.org/wiki/%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0维基百科上有更好的解法。。。多谢。</li>
+    <li class="recent_comment_author">--zdd</li>
+</ul>
+</div>
+</div>
+
+<h3 class="catListTitle">阅读排行榜</h3>
+<div class="RecentComment" id="TopViewPosts"> 
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/graphics/archive/2010/08/24/1761620.html">1. 关于数组的几道面试题(16998)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2012/09/08/2676039.html">2. 程序员，请昂起你高贵的头！(16622)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2011/03/09/1977717.html">3. 字符串面试题（一）字符串逆序(13036)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2010/06/21/1752421.html">4. 算法-求二进制数中1的个数(10313)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2010/08/05/1793393.html">5. 判断点是否在三角形内(6821)</a></li></ul></div>
+</div>
+
+<h3 class="catListTitle">评论排行榜</h3>
+<div class="RecentComment" id="TopCommentsPosts">
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/graphics/archive/2012/09/08/2676039.html">1. 程序员，请昂起你高贵的头！(340)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2010/08/24/1761620.html">2. 关于数组的几道面试题(73)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2012/08/08/2609005.html">3. 几何变换详解(66)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2009/11/25/1610914.html">4. 使用DirectX截屏(52)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2010/08/05/1793393.html">5. 判断点是否在三角形内(39)</a></li></ul></div>
+</div>
+<h3 class="catListTitle">推荐排行榜</h3>
+<div class="RecentComment">
+	<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/graphics/archive/2012/09/08/2676039.html">1. 程序员，请昂起你高贵的头！(155)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2010/06/21/1752421.html">2. 算法-求二进制数中1的个数(15)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2010/08/24/1761620.html">3. 关于数组的几道面试题(14)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2011/03/09/1977717.html">4. 字符串面试题（一）字符串逆序(11)</a></li><li><a href="http://www.cnblogs.com/graphics/archive/2011/04/23/2024294.html">5. DirectX-渲染到纹理(9)</a></li></ul></div>
+</div></div>
+
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+
+<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a id="Footer1_Hyperlink3" name="Hyperlink1" href="http://www.cnblogs.com/" style="font-family:Verdana;font-size:12px;">博客园</a>
+	<br>
+	Copyright © zdd
+</p>
+</div>
+</div>
+
+<script type="text/javascript" src="./射线和三角形的相交检测（ray triangle intersection test） - zdd - 博客园_files/google-analytics.js"></script>
+
+
+</body></html>
