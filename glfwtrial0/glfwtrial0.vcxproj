@@ -75,10 +75,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="trial3frame_fs.glsl" />
+    <None Include="trial3vertex_vs.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="glcommon.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="xtGLTrial2.h" />
+    <ClInclude Include="xtGLTrial3.h" />
+    <ClInclude Include="xtlog.h" />
+    <ClInclude Include="xtShaderDebugLog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glfwtrial0.cpp" />
@@ -86,6 +93,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="xtGLTrial2.cpp" />
+    <ClCompile Include="xtGLTrial3.cpp" />
+    <ClCompile Include="xtShaderDebugLog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\glfw-3.0.1\msbuild\src\glfw.vcxproj">

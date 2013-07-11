@@ -6,80 +6,84 @@
 #include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include <string>
+#include <fstream>
+
+#include "xtGLTrial2.h"
+#include "xtGLTrial3.h"
+
+std::ofstream g_log_file;
+
+bool Start_Log( const char *file_name) 
+{
+	g_log_file.open(file_name);
+	if ( !g_log_file.is_open() ) {
+		printf("ERROR: could not open log file % for writing\n",file_name);
+		return false;
+	}
+	g_log_file << "GL log file "<< std::endl;
+	return true;
+}
+
+void log_gl_state () {
+  g_log_file << "-------------------------------------------------------------------\n";
+  g_log_file << "GL State Machine Dump:\n";
+  int v = 0;
+  glGetIntegerv (GL_ACTIVE_TEXTURE, &v);
+  g_log_file << "GL_ACTIVE_TEXTURE" << " " << v - GL_TEXTURE0 << "\n";
+  unsigned char b = GL_FALSE;
+  glGetBooleanv (GL_ALPHA_TEST, &b);
+  if (GL_TRUE == b) {
+    g_log_file << "GL_ALPHA_TEST" << " GL_TRUE\n";
+  } else {
+    g_log_file << "GL_ALPHA_TEST" << " GL_FALSE\n";
+  }
+  glGetBooleanv (GL_CULL_FACE, &b);
+  if (GL_TRUE == b) {
+    g_log_file << "GL_CULL_FACE" << " GL_TRUE\n";
+  } else {
+    g_log_file << "GL_CULL_FACE" << " GL_FALSE\n";
+  }
+  glGetIntegerv (GL_CULL_FACE_MODE, &v);
+  if (GL_FRONT == v) {
+    g_log_file << "GL_CULL_FACE_MODE" << " GL_FRONT\n";
+  } else if (GL_BACK == v) {
+    g_log_file << "GL_CULL_FACE_MODE" << " GL_BACK\n";
+  } else {
+    g_log_file << "GL_CULL_FACE_MODE" << " GL_FRONT_AND_BACK\n";
+  }
+  glGetIntegerv (GL_CURRENT_PROGRAM, &v);
+  g_log_file << "GL_CURRENT_PROGRAM" << " " << v << "\n";
+  float f = 0.0f;
+  glGetFloatv (GL_DEPTH_CLEAR_VALUE, &f);
+  g_log_file << "GL_DEPTH_CLEAR_VALUE" << " " << f << "\n";
+  glGetBooleanv (GL_DEPTH_TEST, &b);
+  if (GL_TRUE == b) {
+    g_log_file << "GL_DEPTH_TEST" << " GL_TRUE\n";
+  } else {
+    g_log_file << "GL_DEPTH_TEST" << " GL_FALSE\n";
+  }
+  glGetBooleanv (GL_DEPTH_WRITEMASK, &b);
+  if (GL_TRUE == b) {
+    g_log_file << "GL_DEPTH_WRITEMASK" << " GL_TRUE\n";
+  } else {
+    g_log_file << "GL_DEPTH_WRITEMASK" << " GL_FALSE\n";
+  }
+  glGetIntegerv (GL_FRONT_FACE, &v);
+  if (GL_CW == v) {
+    g_log_file << "GL_FRONT_FACE" << " GL_CW\n";
+  } else {
+    g_log_file << "GL_FRONT_FACE" << " GL_CCW\n";
+  }
+  g_log_file << "-------------------------------------------------------------------"<<std::endl;
+}
+
+
 
 class xtGLTrial
 {
-public:
-	void CreateVBO();
 
-	void Draw(GLFWwindow *window);
-
-	unsigned int vbo;
-	unsigned int vao;
-	unsigned int shader_programme;
 };
 
-void xtGLTrial::Draw(GLFWwindow *window)
-{
-	bool running = true;
-while (running) {
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glUseProgram (shader_programme);
-  glBindVertexArray (vao);
-  glDrawArrays (GL_TRIANGLES, 0, 3);
-  glfwSwapBuffers(window);
-  running = !glfwGetKey(window, GLFW_KEY_ESCAPE) ;
-}
-}
-
-void xtGLTrial::CreateVBO()
-{
-	float points[] = {
-     0.0f,  0.5f,  0.0f,
-     0.5f, -0.5f,  0.0f,
-    -0.5f, -0.5f,  0.0f
-  };
-
-	   vbo= 0;
-  glGenBuffers (1, &vbo);
-  glBindBuffer (GL_ARRAY_BUFFER, vbo);
-  glBufferData (GL_ARRAY_BUFFER, 9 * sizeof (float), &points[0], GL_STATIC_DRAW);
-
-
-     vao = 0;
-  glGenVertexArrays (1, &vao);
-  glBindVertexArray (vao);
-  glEnableVertexAttribArray (0);
-  glBindBuffer (GL_ARRAY_BUFFER, vbo);
-  glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
-
-
-  std::string vertex_shader = "";
-vertex_shader+="in vec3 vp;";
-vertex_shader+="void main () {" ;
-vertex_shader+="  gl_Position = vec4 (vp, 1.0);" ;
-vertex_shader+="}";
-
-std::string fragment_shader = "";
-fragment_shader+="out vec4 frag_colour;";
-fragment_shader+="void main () {";
-fragment_shader+="  frag_colour = vec4 (0.5, 0.0, 0.5, 1.0);";
-fragment_shader+="}";
-
-unsigned int vs = glCreateShader (GL_VERTEX_SHADER);
-const char* str = vertex_shader.c_str ();
-glShaderSource (vs, 1, &str, NULL);
-glCompileShader (vs);
-unsigned int fs = glCreateShader (GL_FRAGMENT_SHADER);
-const char* strb = fragment_shader.c_str ();
-glShaderSource (fs, 1, &strb, NULL);
-glCompileShader (fs);
-
- shader_programme = glCreateProgram ();
-glAttachShader (shader_programme, fs);
-glAttachShader (shader_programme, vs);
-glLinkProgram (shader_programme);
-}
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -92,8 +96,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	//glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR,major);
 
 	//glfwOpenWindow(640,480,8,8,8,8,24,8,GLFW_WINDOW);
-
-    GLFWwindow *window = glfwCreateWindow(500, 500, "Split view demo", NULL, NULL);
+	Start_Log("glfwtrial0.log");
+	g_log_file << "Create Windows\n";
+    GLFWwindow *window = glfwCreateWindow(640, 480, "Demo", NULL, NULL);
     if (!window)
     {
         fprintf(stderr, "Failed to open GLFW window\n");
@@ -120,10 +125,17 @@ int _tmain(int argc, _TCHAR* argv[])
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
+	log_gl_state();
+
 	//==================================================================
-	xtGLTrial gltrialpro;
-	gltrialpro.CreateVBO();
-	gltrialpro.Draw(window);
+	//xtGLTrial2 gltrialpro;
+	//gltrialpro.CreateVBO();
+	//log_gl_state();
+	//gltrialpro.Draw(window);
+	xtGLTrial3 gltrial3;
+	gltrial3.CreateVBO();
+	gltrial3.Render(window);
+
 
 	glfwTerminate();
 
