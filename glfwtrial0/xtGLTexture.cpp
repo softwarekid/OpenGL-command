@@ -81,7 +81,7 @@ glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
 //glBindBuffer(GL_ARRAY_BUFFER, colorsvbo);
 //glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,(GLubyte*)NULL);
 glEnableVertexAttribArray (1); // don't forget this!
-//glBindBuffer(GL_ARRAY_BUFFER, vt_vbo);
+glBindBuffer(GL_ARRAY_BUFFER, vt_vbo);
 dimensions = 2; // 2d data for texture coords
 glVertexAttribPointer (1, dimensions, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
 
