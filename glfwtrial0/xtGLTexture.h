@@ -2,22 +2,22 @@
 #include "glcommon.h"
 
 class xtShaderlog;
-class xtGLTrial3
+class xtGLTexture
 {
 public:
-	xtGLTrial3(void);
-	~xtGLTrial3(void);
+	xtGLTexture(void);
+	~xtGLTexture(void);
 
+	void LoadTexture(char *filename);
 	void CreateVBO();
-
 	void Render(GLFWwindow *window);
-
 private:
-	unsigned int vbo;
-	unsigned int vao;
+	GLuint mTex2d;
+	GLuint vao;
+	GLuint vbo;
 	unsigned int shader_programme;
-	xtShaderlog *shaderlog;
 
+	xtShaderlog *shaderlog;
 	unsigned int mGLMatrixIdx;
 };
 

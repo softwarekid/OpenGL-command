@@ -10,6 +10,7 @@
 
 #include "xtGLTrial2.h"
 #include "xtGLTrial3.h"
+#include "xtGLTexture.h"
 
 std::ofstream g_log_file;
 
@@ -132,10 +133,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	//gltrialpro.CreateVBO();
 	//log_gl_state();
 	//gltrialpro.Draw(window);
-	xtGLTrial3 gltrial3;
-	gltrial3.CreateVBO();
-	gltrial3.Render(window);
-
+	//xtGLTrial3 gltrial3;
+	//gltrial3.CreateVBO();
+	//gltrial3.Render(window);
+	//char *texturefile = "lena.jpg";
+	//char *texturefile = "aloeR.jpg";
+	char *texturefile = "skulluvmap.png";
+	xtGLTexture textrial;
+	textrial.LoadTexture(texturefile);
+	textrial.CreateVBO();
+	textrial.Render(window);
 
 	glfwTerminate();
 

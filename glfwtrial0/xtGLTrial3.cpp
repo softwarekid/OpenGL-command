@@ -22,11 +22,31 @@ void xtGLTrial3::Render(GLFWwindow *window)
 bool running = true;
 while (running) {
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glUseProgram (shader_programme);
 
+  // transformed
+  glUseProgram (shader_programme);
   glBindVertexArray (vao);
   glDrawArrays (GL_TRIANGLES, 0, 3);
+  //glfwSwapBuffers(window);
+
+
+// pay special attension to this column 
+float matrix[] = {
+  1.0f, 0.0f, 0.0f, 0.0f, // first column
+  0.0f, 1.0f, 0.0f, 0.0f, // second column
+  0.0f, 0.0f, 1.0f, 0.0f, // third column
+  0.0f, 0.0f, 0.0f, 1.0f // fourth column
+};
+
+  // identical
+  glUseProgram (shader_programme);
+  glUniformMatrix4fv (mGLMatrixIdx, 1, GL_FALSE, matrix);
+  glBindVertexArray (vao);
+  glDrawArrays (GL_TRIANGLES, 0, 3);
+
+
   glfwSwapBuffers(window);
+
   running = !glfwGetKey(window,GLFW_KEY_ESCAPE) ;
 
   //shaderlog->print_all();
@@ -70,9 +90,9 @@ glBindVertexArray (vao);
 glEnableVertexAttribArray (0);
 glBindBuffer (GL_ARRAY_BUFFER, points_vbo);
 glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
-//glEnableVertexAttribArray (1);
-//glBindBuffer (GL_ARRAY_BUFFER, colours_vbo);
-//glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
+glEnableVertexAttribArray (1);
+glBindBuffer (GL_ARRAY_BUFFER, colours_vbo);
+glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
 
 assert(vao);
 //==============================================================================
@@ -86,6 +106,19 @@ shaderlog->LoadCreateVFShader(vsPath,fsPath);
 shaderlog->print_all();
 
 this->shader_programme = shaderlog->GetProgrammeIdx();
+
+// pay special attension to this column 
+float matrix[] = {
+  1.0f, 0.0f, 0.0f, 0.0f, // first column
+  0.0f, 1.0f, 0.0f, 0.0f, // second column
+  0.0f, 0.0f, 1.0f, 0.0f, // third column
+  0.5f, 0.0f, 0.0f, 1.0f // fourth column
+};
+
+mGLMatrixIdx = glGetUniformLocation (shader_programme, "xtmatrix");
+glUseProgram (shader_programme);
+glUniformMatrix4fv (mGLMatrixIdx, 1, GL_FALSE, matrix);
+
 }
 
 /****

@@ -82,10 +82,15 @@
     <ClInclude Include="glcommon.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="xtCreateScene.h" />
+    <ClInclude Include="xtGLTexture.h" />
     <ClInclude Include="xtGLTrial2.h" />
     <ClInclude Include="xtGLTrial3.h" />
     <ClInclude Include="xtlog.h" />
+    <ClInclude Include="xtShader.h" />
     <ClInclude Include="xtShaderDebugLog.h" />
+    <ClInclude Include="xtTexture.h" />
+    <ClInclude Include="xtVertexBufferObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glfwtrial0.cpp" />
@@ -93,9 +98,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="xtCreateScene.cpp" />
+    <ClCompile Include="xtGLTexture.cpp" />
     <ClCompile Include="xtGLTrial2.cpp" />
     <ClCompile Include="xtGLTrial3.cpp" />
+    <ClCompile Include="xtShader.cpp" />
     <ClCompile Include="xtShaderDebugLog.cpp" />
+    <ClCompile Include="xtTexture.cpp" />
+    <ClCompile Include="xtVertexBufferObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\glfw-3.0.1\msbuild\src\glfw.vcxproj">
@@ -103,6 +113,9 @@
     </ProjectReference>
     <ProjectReference Include="..\glfw-3.0.1\msbuild\ZERO_CHECK.vcxproj">
       <Project>{9bc5b2a8-f717-437e-a175-499b0bf868a6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\soil\Simple OpenGL Image Library\projects\VC9\SOIL.vcxproj">
+      <Project>{c32fb2b4-500c-43cd-a099-eecce079d3f1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
