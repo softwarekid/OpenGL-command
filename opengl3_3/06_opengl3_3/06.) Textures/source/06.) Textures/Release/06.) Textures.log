@@ -1,0 +1,25 @@
+﻿Build started 2013/7/19 19:59:48.
+     1>Project "E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures\06.) Textures.vcxproj" on node 2 (build target(s)).
+     1>PrepareForBuild:
+         Creating directory "E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\Release\".
+       InitializeBuildStatus:
+         Creating "Release\06.) Textures.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         d:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W2 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt openGLControl.cpp renderScene.cpp shaders.cpp texture.cpp vertexBufferObject.cpp win_OpenGLApp.cpp
+         openGLControl.cpp
+     1>e:\gitproject\opengl-command\opengl3_3\06_opengl3_3\06.) textures\source\06.) textures\common_header.h(17): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+         renderScene.cpp
+     1>e:\gitproject\opengl-command\opengl3_3\06_opengl3_3\06.) textures\source\06.) textures\common_header.h(17): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+         shaders.cpp
+     1>e:\gitproject\opengl-command\opengl3_3\06_opengl3_3\06.) textures\source\06.) textures\common_header.h(17): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+         texture.cpp
+     1>e:\gitproject\opengl-command\opengl3_3\06_opengl3_3\06.) textures\source\06.) textures\common_header.h(17): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+         vertexBufferObject.cpp
+     1>e:\gitproject\opengl-command\opengl3_3\06_opengl3_3\06.) textures\source\06.) textures\common_header.h(17): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+         win_OpenGLApp.cpp
+     1>e:\gitproject\opengl-command\opengl3_3\06_opengl3_3\06.) textures\source\06.) textures\common_header.h(17): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+     1>Done Building Project "E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures\06.) Textures.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:07.45

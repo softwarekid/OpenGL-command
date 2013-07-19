@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="06.) Textures">
+</Property><Property Name="Solution File" Value="E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures.sln">
+</Property><Property Name="User Options File" Value="E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures.suo">
+</Property><Property Name="Date" Value="2013年7月19日">
+</Property><Property Name="Time" Value="19:59">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="06.) Textures.sln" Description="File successfully backed up as E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="06.) Textures.suo" Description="File successfully backed up as E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures.suo.old">
+</Event><Event ErrorLevel="0" Project="06.) Textures" Source="06.) Textures\06.) Textures.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures\06.) Textures.vcproj'.">
+</Event><Event ErrorLevel="1" Project="06.) Textures" Source="06.) Textures\06.) Textures.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="06.) Textures" Source="06.) Textures\06.) Textures.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\opengl3_3\06_opengl3_3\06.) Textures\source\06.) Textures\06.) Textures.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="06.) Textures" Source="06.) Textures\06.) Textures.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="06.) Textures.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="06.) Textures.sln" Description="Converted">
+</Event></UpgradeLog>

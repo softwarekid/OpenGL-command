@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="15.) OBJ Model Loader">
+</Property><Property Name="Solution File" Value="E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\15.) OBJ Model Loader.sln">
+</Property><Property Name="User Options File" Value="E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\15.) OBJ Model Loader.suo">
+</Property><Property Name="Date" Value="2013年7月19日">
+</Property><Property Name="Time" Value="19:55">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="15.) OBJ Model Loader.sln" Description="File successfully backed up as E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\15.) OBJ Model Loader.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="15.) OBJ Model Loader.suo" Description="File successfully backed up as E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\15.) OBJ Model Loader.suo.old">
+</Event><Event ErrorLevel="0" Project="15.) OBJ Model Loader" Source="15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj" Description="Converting project file 'E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj'.">
+</Event><Event ErrorLevel="1" Project="15.) OBJ Model Loader" Source="15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="15.) OBJ Model Loader" Source="15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj" Description="MSB8012: $(TargetName) ('15.) OBJ Model Loader') does not match the Linker's OutputFile property value 'E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\bin\15.) OBJ Model Loader_d.exe' ('15.) OBJ Model Loader_d') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetName) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="15.) OBJ Model Loader" Source="15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj" Description="MSB8012: $(TargetPath) ('E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\bin\15.) OBJ Model Loader.exe') does not match the Linker's OutputFile property value 'E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\bin\15.) OBJ Model Loader_d.exe' ('E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\bin\15.) OBJ Model Loader_d.exe') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="15.) OBJ Model Loader" Source="15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj" Description="Done converting to new project file 'E:\gitProject\OpenGL-command\15_opengl3_3\15.) OBJ Model Loader\15.) OBJ Model Loader\15.) OBJ Model Loader.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="15.) OBJ Model Loader" Source="15.) OBJ Model Loader\15.) OBJ Model Loader.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="15.) OBJ Model Loader.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="15.) OBJ Model Loader.sln" Description="Converted">
+</Event></UpgradeLog>
